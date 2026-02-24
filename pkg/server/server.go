@@ -6,6 +6,7 @@ import (
 	"log"
 	"net"
 	pb "spectral-assignment/gen/proto"
+	"spectral-assignment/pkg/server/database"
 
 	"google.golang.org/grpc"
 )
@@ -34,8 +35,24 @@ func (s *server) Echo(ctx context.Context, req *pb.EchoRequest) (*pb.EchoRespons
 // basic implementation from
 // https://grpc.io/docs/languages/go/basics/
 func Run() {
-	port := 12000
+	// dependencies here
+	mockData, err := database.ReadCsvData("./meterusage.csv")
+	if err != nil {
+		log.Fatalf("failed to read csv data: %v", err)
+	}
 
+	db := database.NewMemoryDatabase(mockData)
+	res, err := db.GetSensorReadings(context.Background(), database.ReadingRequest{
+		SensorId: "0",
+		Cursor:   nil,
+		Limit:    99999,
+	})
+	if err != nil {
+		log.Fatalf("failed to get sensor readings: %v", err)
+	}
+	log.Printf("Sensor readings: %+v", res[0])
+
+	port := 12000
 	portStr := fmt.Sprintf("0.0.0.0:%d", port)
 
 	lis, err := net.Listen("tcp", portStr)
