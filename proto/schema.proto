@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package proto;
+
+option go_package = "spectral-assignment/gen/proto";
+
+message EchoRequest {
+  optional string name = 1;
+}
+
+message EchoResponse {
+  string message = 1;
+}
+
+service HelloService {
+  rpc Echo(EchoRequest) returns (EchoResponse);
+}
