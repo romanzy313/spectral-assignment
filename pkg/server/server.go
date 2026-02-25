@@ -5,12 +5,12 @@ import (
 	"fmt"
 	"log"
 	"net"
-	"time"
 
 	"google.golang.org/grpc"
 
 	pb "spectral-assignment/gen/proto"
 	"spectral-assignment/pkg/server/repository"
+	"spectral-assignment/pkg/server/router"
 	"spectral-assignment/pkg/server/service"
 )
 
@@ -40,7 +40,12 @@ func (s *server) Echo(ctx context.Context, req *pb.EchoRequest) (*pb.EchoRespons
 // basic implementation from
 // https://grpc.io/docs/languages/go/basics/
 func Run() {
-	// dependencies here
+	port := 12000
+	address := fmt.Sprintf("0.0.0.0:%d", port)
+
+	// dependencies are initialized here
+	s := grpc.NewServer()
+
 	mockData, err := repository.ReadCsvData("./meterusage.csv")
 	if err != nil {
 		log.Fatalf("failed to read csv data: %v", err)
@@ -48,23 +53,14 @@ func Run() {
 
 	sensorRepo := repository.NewSensorMemoryRepository(mockData)
 	sensorService := service.NewSensorService(sensorRepo)
+	sensorRouter := router.NewSensorRouter(sensorService)
 
-	res, err := sensorService.GetSensorReadings(context.Background(), time.Time{}, 9999)
-	if err != nil {
-		log.Fatalf("failed to get sensor readings: %v", err)
-	}
-	log.Printf("Sensor readings: %+v", res.Data[0])
-
-	port := 12000
-	address := fmt.Sprintf("0.0.0.0:%d", port)
+	sensorRouter.Register(s)
 
 	lis, err := net.Listen("tcp", address)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
-
-	s := grpc.NewServer()
-	pb.RegisterHelloServiceServer(s, &server{})
 
 	log.Printf("server listening on port %d", port)
 
