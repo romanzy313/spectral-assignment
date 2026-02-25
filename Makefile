@@ -25,3 +25,7 @@ run-server:
 run-frontend:
 	pnpm --filter frontend build
 	pnpm --filter frontend preview
+
+.PHONY: go-test
+go-test:
+	go test -v ./...
