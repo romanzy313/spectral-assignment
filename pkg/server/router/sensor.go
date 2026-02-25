@@ -33,7 +33,8 @@ func (s *SensorRouter) GetPage(ctx context.Context, req *pb.GetPageRequest) (*pb
 	page, err := s.sensorService.GetPage(ctx, req.Cursor.AsTime(), int(req.Limit))
 
 	if err != nil {
-		return nil, status.Errorf(codes.Internal, "something went wrong: %w", err)
+		log.Printf("failed to get page data: %s", err.Error())
+		return nil, status.Errorf(codes.Internal, "something went wrong")
 	}
 
 	resp := &pb.GetPageResponse{
