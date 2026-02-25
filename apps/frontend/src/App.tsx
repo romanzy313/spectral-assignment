@@ -2,7 +2,7 @@ import { SensorTable } from "./component/SensorTable";
 import { useTimeseries } from "./hook/useTimeseries";
 import { ClientApi } from "./util/api";
 
-const api = new ClientApi("http://localhost:12001");
+const api = new ClientApi(import.meta.env.PUBLIC_SPECTRAL_GRPC_CLIENT_ORIGIN);
 
 function App() {
   const { data, loadMore, canLoadMore, clearError, error } = useTimeseries({

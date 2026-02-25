@@ -15,16 +15,20 @@ proto:
 
 .PHONY: run-client
 run-client:
+	PORT=12001 \
+	SPECTRAL_FRONTEND_ORIGIN=http://localhost:12002 \
+	SPECTRAL_GRPC_SERVER_ADDRESS=localhost:12000 \
 	go run cmd/client/main.go
 
 .PHONY: run-server
 run-server:
+	PORT=12000 \
 	go run cmd/server/main.go
 
 .PHONY: run-frontend
-run-frontend:
-	pnpm --filter frontend build
-	pnpm --filter frontend preview
+dev-frontend:
+	PUBLIC_SPECTRAL_GRPC_CLIENT_ORIGIN=http://localhost:12001 \
+    pnpm --filter frontend dev
 
 .PHONY: go-test
 go-test:

@@ -16,7 +16,14 @@ export interface ApiCaller {
 }
 
 export class ClientApi implements ApiCaller {
-  constructor(private baseUrl: string) {}
+  private baseUrl: string;
+
+  constructor(baseUrl: string) {
+    if (!baseUrl) {
+      throw new Error("baseUrl is required");
+    }
+    this.baseUrl = baseUrl;
+  }
 
   async apiCall<T, U>(
     method: "GET" | "POST" | "PUT" | "DELETE",
@@ -25,6 +32,11 @@ export class ClientApi implements ApiCaller {
     responseConverter?: (data: any) => U,
   ): Promise<U> {
     const url = new URL(path, this.baseUrl);
+    console.log("URL is ", {
+      url,
+      path,
+      baseUrl: this.baseUrl,
+    });
     const options: RequestInit = {
       method,
       headers: {

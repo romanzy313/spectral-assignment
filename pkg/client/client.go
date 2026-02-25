@@ -1,6 +1,7 @@
 package client
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
@@ -11,17 +12,17 @@ import (
 )
 
 // TODO: use the same logger as server
-func Run() {
+func Run(config Config) {
 	e := echo.New()
 	// e.Use(middleware.RequestLogger())
-	e.Use(middleware.CORS("http://localhost:12002"))
+	e.Use(middleware.CORS(config.FrontendOrigin))
 
 	e.GET("/health", func(c *echo.Context) error {
 		return c.String(http.StatusOK, "OK")
 	})
 
 	// define dependencies here
-	sensorClient, err := sensor.NewGrpcClient("localhost:12000")
+	sensorClient, err := sensor.NewGrpcClient(config.GrpcServerAddress)
 	if err != nil {
 		log.Fatalf("failed to initialize client: %s", err.Error())
 		return
@@ -31,7 +32,8 @@ func Run() {
 	sensorRouter := sensor.NewRouter(sensorClient)
 	sensorRouter.Register(e)
 
-	if err := e.Start(":12001"); err != nil {
+	addr := fmt.Sprintf("0.0.0.0:%d", config.Port)
+	if err := e.Start(addr); err != nil {
 		e.Logger.Error("failed to start server", "error", err)
 	}
 }
