@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"context"
 	"fmt"
+	"math"
 	"os"
 	"strconv"
 	"strings"
@@ -44,7 +45,13 @@ func ReadCsvData(fileName string) ([]model.SensorData, error) {
 
 		value, err := strconv.ParseFloat(parts[1], 64)
 		if err != nil {
+			// TODO: this should not throw, but go on and log it maybe?
 			return nil, fmt.Errorf("failed to parse value: %w", err)
+		}
+
+		// sneaky :)
+		if math.IsNaN(value) || math.IsInf(value, 0) {
+			continue
 		}
 
 		result = append(result, model.SensorData{
