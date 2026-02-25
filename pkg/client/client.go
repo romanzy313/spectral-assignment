@@ -13,7 +13,8 @@ import (
 // TODO: use the same logger as server
 func Run() {
 	e := echo.New()
-	e.Use(middleware.RequestLogger())
+	// e.Use(middleware.RequestLogger())
+	e.Use(middleware.CORS("http://localhost:12002"))
 
 	e.GET("/health", func(c *echo.Context) error {
 		return c.String(http.StatusOK, "OK")
