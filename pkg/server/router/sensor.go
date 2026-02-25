@@ -34,7 +34,7 @@ func (s *SensorRouter) GetPage(ctx context.Context, req *pb.GetPageRequest) (*pb
 
 	if err != nil {
 		log.Printf("failed to get page data: %s", err.Error())
-		return nil, status.Errorf(codes.Internal, "something went wrong")
+		return nil, status.Errorf(codes.Internal, "failed to get page data: %s", err.Error())
 	}
 
 	resp := &pb.GetPageResponse{
@@ -52,8 +52,6 @@ func (s *SensorRouter) GetPage(ctx context.Context, req *pb.GetPageRequest) (*pb
 			Value:     reading.Value,
 		})
 	}
-
-	log.Printf("responding with %v\n", resp)
 
 	return resp, nil
 }
