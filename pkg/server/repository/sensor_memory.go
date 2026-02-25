@@ -10,7 +10,7 @@ import (
 	"strings"
 	"time"
 
-	"spectral-assignment/pkg/server/model"
+	"github.com/romanzy313/spectral-assignment/pkg/server/model"
 )
 
 func ReadCsvData(fileName string) ([]model.SensorData, error) {

@@ -2,8 +2,9 @@ package repository
 
 import (
 	"reflect"
-	"spectral-assignment/pkg/server/model"
 	"testing"
+
+	"github.com/romanzy313/spectral-assignment/pkg/server/model"
 )
 
 func ptr[T any](v T) *T { return &v }

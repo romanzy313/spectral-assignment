@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 
-	"spectral-assignment/pkg/client/sensor"
+	"github.com/romanzy313/spectral-assignment/pkg/client/sensor"
 
 	"github.com/labstack/echo/v5"
 	"github.com/labstack/echo/v5/middleware"

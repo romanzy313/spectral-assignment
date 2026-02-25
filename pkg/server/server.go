@@ -7,9 +7,9 @@ import (
 
 	"google.golang.org/grpc"
 
-	"spectral-assignment/pkg/server/repository"
-	"spectral-assignment/pkg/server/router"
-	"spectral-assignment/pkg/server/service"
+	"github.com/romanzy313/spectral-assignment/pkg/server/repository"
+	"github.com/romanzy313/spectral-assignment/pkg/server/router"
+	"github.com/romanzy313/spectral-assignment/pkg/server/service"
 )
 
 // basic implementation from

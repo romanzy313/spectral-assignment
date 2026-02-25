@@ -2,8 +2,9 @@ package service
 
 import (
 	"context"
-	"spectral-assignment/pkg/server/model"
-	"spectral-assignment/pkg/server/repository"
+
+	"github.com/romanzy313/spectral-assignment/pkg/server/model"
+	"github.com/romanzy313/spectral-assignment/pkg/server/repository"
 )
 
 type SensorService struct {

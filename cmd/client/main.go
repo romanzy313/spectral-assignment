@@ -1,6 +1,6 @@
 package main
 
-import "spectral-assignment/pkg/client"
+import "github.com/romanzy313/spectral-assignment/pkg/client"
 
 func main() {
 	client.Run()

@@ -1,6 +1,6 @@
 package sensor
 
-import protov1 "spectral-assignment/gen/proto/v1"
+import protov1 "github.com/romanzy313/spectral-assignment/gen/proto/v1"
 
 type SensorDataDTO struct {
 	Timestamp int64   `json:"t"`

@@ -4,8 +4,8 @@ import (
 	"context"
 	"log"
 
-	protov1 "spectral-assignment/gen/proto/v1"
-	"spectral-assignment/pkg/server/service"
+	protov1 "github.com/romanzy313/spectral-assignment/gen/proto/v1"
+	"github.com/romanzy313/spectral-assignment/pkg/server/service"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"

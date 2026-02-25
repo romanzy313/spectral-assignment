@@ -1,4 +1,4 @@
-module spectral-assignment
+module github.com/romanzy313/spectral-assignment
 
 go 1.25.6
 

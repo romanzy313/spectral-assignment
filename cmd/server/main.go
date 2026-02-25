@@ -1,6 +1,6 @@
 package main
 
-import "spectral-assignment/pkg/server"
+import "github.com/romanzy313/spectral-assignment/pkg/server"
 
 func main() {
 	server.Run()

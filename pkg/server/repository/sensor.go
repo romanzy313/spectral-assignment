@@ -3,7 +3,7 @@ package repository
 import (
 	"context"
 
-	"spectral-assignment/pkg/server/model"
+	"github.com/romanzy313/spectral-assignment/pkg/server/model"
 )
 
 type SensorRepository interface {

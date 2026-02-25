@@ -6,7 +6,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 
-	protov1 "spectral-assignment/gen/proto/v1"
+	protov1 "github.com/romanzy313/spectral-assignment/gen/proto/v1"
 )
 
 type GrpcClient interface {
