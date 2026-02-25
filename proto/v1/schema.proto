@@ -1,10 +1,8 @@
 syntax = "proto3";
 
-package proto;
+package proto.v1;
 
-import "google/protobuf/timestamp.proto";
-
-option go_package = "spectral-assignment/gen/proto";
+option go_package = "spectral-assignment/gen/proto/v1;protov1";
 
 message SensorData {
   int64 timestamp = 1;

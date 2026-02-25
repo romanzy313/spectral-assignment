@@ -2,9 +2,9 @@
 // versions:
 // - protoc-gen-go-grpc v1.6.1
 // - protoc             v3.21.12
-// source: schema.proto
+// source: proto/v1/schema.proto
 
-package proto
+package protov1
 
 import (
 	context "context"
@@ -19,7 +19,7 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	SensorService_GetPage_FullMethodName = "/proto.SensorService/GetPage"
+	SensorService_GetPage_FullMethodName = "/proto.v1.SensorService/GetPage"
 )
 
 // SensorServiceClient is the client API for SensorService service.
@@ -108,7 +108,7 @@ func _SensorService_GetPage_Handler(srv interface{}, ctx context.Context, dec fu
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var SensorService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "proto.SensorService",
+	ServiceName: "proto.v1.SensorService",
 	HandlerType: (*SensorServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -117,5 +117,5 @@ var SensorService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "schema.proto",
+	Metadata: "proto/v1/schema.proto",
 }

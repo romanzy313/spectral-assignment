@@ -6,18 +6,18 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 
-	pb "spectral-assignment/gen/proto"
+	protov1 "spectral-assignment/gen/proto/v1"
 )
 
 type GrpcClient interface {
 	Close() error
 
-	GetPage(ctx context.Context, req *pb.GetPageRequest) (*pb.GetPageResponse, error)
+	GetPage(ctx context.Context, req *protov1.GetPageRequest) (*protov1.GetPageResponse, error)
 }
 
 type GrpcClientImpl struct {
 	conn   *grpc.ClientConn
-	client pb.SensorServiceClient
+	client protov1.SensorServiceClient
 }
 
 func NewGrpcClient(addr string) (*GrpcClientImpl, error) {
@@ -28,7 +28,7 @@ func NewGrpcClient(addr string) (*GrpcClientImpl, error) {
 		return nil, err
 	}
 
-	client := pb.NewSensorServiceClient(conn)
+	client := protov1.NewSensorServiceClient(conn)
 
 	return &GrpcClientImpl{
 		conn:   conn,
@@ -40,6 +40,6 @@ func (c *GrpcClientImpl) Close() error {
 	return c.conn.Close()
 }
 
-func (c *GrpcClientImpl) GetPage(ctx context.Context, req *pb.GetPageRequest) (*pb.GetPageResponse, error) {
+func (c *GrpcClientImpl) GetPage(ctx context.Context, req *protov1.GetPageRequest) (*protov1.GetPageResponse, error) {
 	return c.client.GetPage(ctx, req)
 }

@@ -45,7 +45,7 @@ export function useTimeseries({
     try {
       const more = await api.apiCall<SensorPageRequest, SensorPage>(
         "GET",
-        "/page",
+        "/api/v1/sensor",
         {
           cursor: cursor,
           limit,

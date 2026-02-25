@@ -5,13 +5,13 @@ install-tools:
 
 .PHONY: proto
 proto:
-	@rm -rf gen/proto
-	@mkdir -p gen/proto
+	@rm -rf gen/proto/v1
+	@mkdir -p gen/proto/v1
 	protoc \
-		--proto_path=proto \
-		--go_out=gen/proto --go_opt=paths=source_relative \
-		--go-grpc_out=gen/proto --go-grpc_opt=paths=source_relative \
-		proto/schema.proto
+		--proto_path=. \
+		--go_out=gen --go_opt=paths=source_relative \
+		--go-grpc_out=gen --go-grpc_opt=paths=source_relative \
+		proto/v1/schema.proto
 
 .PHONY: run-client
 run-client:

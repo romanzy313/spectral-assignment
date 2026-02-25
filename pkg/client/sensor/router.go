@@ -18,7 +18,7 @@ func NewRouter(grpc GrpcClient) *Router {
 
 func (r *Router) Register(e *echo.Echo) {
 
-	e.GET("/page", func(c *echo.Context) error {
+	e.GET("/api/v1/sensor", func(c *echo.Context) error {
 		ctx := c.Request().Context()
 
 		var bindReq GetPageRequestDTO
@@ -26,6 +26,9 @@ func (r *Router) Register(e *echo.Echo) {
 		err := c.Bind(&bindReq)
 		if err != nil {
 			return c.String(http.StatusBadRequest, "bad request")
+		}
+		if bindReq.Limit < 1 || bindReq.Limit > 10000 {
+			return c.String(http.StatusBadRequest, "limit must be between 1 and 10000")
 		}
 
 		req := ToProtoGetPageRequest(bindReq)

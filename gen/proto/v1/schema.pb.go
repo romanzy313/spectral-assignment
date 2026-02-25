@@ -2,14 +2,13 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        v3.21.12
-// source: schema.proto
+// source: proto/v1/schema.proto
 
-package proto
+package protov1
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	_ "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -32,7 +31,7 @@ type SensorData struct {
 
 func (x *SensorData) Reset() {
 	*x = SensorData{}
-	mi := &file_schema_proto_msgTypes[0]
+	mi := &file_proto_v1_schema_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -44,7 +43,7 @@ func (x *SensorData) String() string {
 func (*SensorData) ProtoMessage() {}
 
 func (x *SensorData) ProtoReflect() protoreflect.Message {
-	mi := &file_schema_proto_msgTypes[0]
+	mi := &file_proto_v1_schema_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -57,7 +56,7 @@ func (x *SensorData) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SensorData.ProtoReflect.Descriptor instead.
 func (*SensorData) Descriptor() ([]byte, []int) {
-	return file_schema_proto_rawDescGZIP(), []int{0}
+	return file_proto_v1_schema_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *SensorData) GetTimestamp() int64 {
@@ -84,7 +83,7 @@ type GetPageRequest struct {
 
 func (x *GetPageRequest) Reset() {
 	*x = GetPageRequest{}
-	mi := &file_schema_proto_msgTypes[1]
+	mi := &file_proto_v1_schema_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -96,7 +95,7 @@ func (x *GetPageRequest) String() string {
 func (*GetPageRequest) ProtoMessage() {}
 
 func (x *GetPageRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_schema_proto_msgTypes[1]
+	mi := &file_proto_v1_schema_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -109,7 +108,7 @@ func (x *GetPageRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetPageRequest.ProtoReflect.Descriptor instead.
 func (*GetPageRequest) Descriptor() ([]byte, []int) {
-	return file_schema_proto_rawDescGZIP(), []int{1}
+	return file_proto_v1_schema_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *GetPageRequest) GetCursor() int64 {
@@ -136,7 +135,7 @@ type GetPageResponse struct {
 
 func (x *GetPageResponse) Reset() {
 	*x = GetPageResponse{}
-	mi := &file_schema_proto_msgTypes[2]
+	mi := &file_proto_v1_schema_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -148,7 +147,7 @@ func (x *GetPageResponse) String() string {
 func (*GetPageResponse) ProtoMessage() {}
 
 func (x *GetPageResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_schema_proto_msgTypes[2]
+	mi := &file_proto_v1_schema_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -161,7 +160,7 @@ func (x *GetPageResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetPageResponse.ProtoReflect.Descriptor instead.
 func (*GetPageResponse) Descriptor() ([]byte, []int) {
-	return file_schema_proto_rawDescGZIP(), []int{2}
+	return file_proto_v1_schema_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *GetPageResponse) GetNextCursor() int64 {
@@ -178,48 +177,48 @@ func (x *GetPageResponse) GetData() []*SensorData {
 	return nil
 }
 
-var File_schema_proto protoreflect.FileDescriptor
+var File_proto_v1_schema_proto protoreflect.FileDescriptor
 
-const file_schema_proto_rawDesc = "" +
+const file_proto_v1_schema_proto_rawDesc = "" +
 	"\n" +
-	"\fschema.proto\x12\x05proto\x1a\x1fgoogle/protobuf/timestamp.proto\"@\n" +
+	"\x15proto/v1/schema.proto\x12\bproto.v1\"@\n" +
 	"\n" +
 	"SensorData\x12\x1c\n" +
 	"\ttimestamp\x18\x01 \x01(\x03R\ttimestamp\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\x01R\x05value\">\n" +
 	"\x0eGetPageRequest\x12\x16\n" +
 	"\x06cursor\x18\x01 \x01(\x03R\x06cursor\x12\x14\n" +
-	"\x05limit\x18\x02 \x01(\x05R\x05limit\"n\n" +
+	"\x05limit\x18\x02 \x01(\x05R\x05limit\"q\n" +
 	"\x0fGetPageResponse\x12$\n" +
 	"\vnext_cursor\x18\x01 \x01(\x03H\x00R\n" +
-	"nextCursor\x88\x01\x01\x12%\n" +
-	"\x04data\x18\x02 \x03(\v2\x11.proto.SensorDataR\x04dataB\x0e\n" +
-	"\f_next_cursor2I\n" +
-	"\rSensorService\x128\n" +
-	"\aGetPage\x12\x15.proto.GetPageRequest\x1a\x16.proto.GetPageResponseB\x1fZ\x1dspectral-assignment/gen/protob\x06proto3"
+	"nextCursor\x88\x01\x01\x12(\n" +
+	"\x04data\x18\x02 \x03(\v2\x14.proto.v1.SensorDataR\x04dataB\x0e\n" +
+	"\f_next_cursor2O\n" +
+	"\rSensorService\x12>\n" +
+	"\aGetPage\x12\x18.proto.v1.GetPageRequest\x1a\x19.proto.v1.GetPageResponseB*Z(spectral-assignment/gen/proto/v1;protov1b\x06proto3"
 
 var (
-	file_schema_proto_rawDescOnce sync.Once
-	file_schema_proto_rawDescData []byte
+	file_proto_v1_schema_proto_rawDescOnce sync.Once
+	file_proto_v1_schema_proto_rawDescData []byte
 )
 
-func file_schema_proto_rawDescGZIP() []byte {
-	file_schema_proto_rawDescOnce.Do(func() {
-		file_schema_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_schema_proto_rawDesc), len(file_schema_proto_rawDesc)))
+func file_proto_v1_schema_proto_rawDescGZIP() []byte {
+	file_proto_v1_schema_proto_rawDescOnce.Do(func() {
+		file_proto_v1_schema_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_proto_v1_schema_proto_rawDesc), len(file_proto_v1_schema_proto_rawDesc)))
 	})
-	return file_schema_proto_rawDescData
+	return file_proto_v1_schema_proto_rawDescData
 }
 
-var file_schema_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
-var file_schema_proto_goTypes = []any{
-	(*SensorData)(nil),      // 0: proto.SensorData
-	(*GetPageRequest)(nil),  // 1: proto.GetPageRequest
-	(*GetPageResponse)(nil), // 2: proto.GetPageResponse
+var file_proto_v1_schema_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_proto_v1_schema_proto_goTypes = []any{
+	(*SensorData)(nil),      // 0: proto.v1.SensorData
+	(*GetPageRequest)(nil),  // 1: proto.v1.GetPageRequest
+	(*GetPageResponse)(nil), // 2: proto.v1.GetPageResponse
 }
-var file_schema_proto_depIdxs = []int32{
-	0, // 0: proto.GetPageResponse.data:type_name -> proto.SensorData
-	1, // 1: proto.SensorService.GetPage:input_type -> proto.GetPageRequest
-	2, // 2: proto.SensorService.GetPage:output_type -> proto.GetPageResponse
+var file_proto_v1_schema_proto_depIdxs = []int32{
+	0, // 0: proto.v1.GetPageResponse.data:type_name -> proto.v1.SensorData
+	1, // 1: proto.v1.SensorService.GetPage:input_type -> proto.v1.GetPageRequest
+	2, // 2: proto.v1.SensorService.GetPage:output_type -> proto.v1.GetPageResponse
 	2, // [2:3] is the sub-list for method output_type
 	1, // [1:2] is the sub-list for method input_type
 	1, // [1:1] is the sub-list for extension type_name
@@ -227,27 +226,27 @@ var file_schema_proto_depIdxs = []int32{
 	0, // [0:1] is the sub-list for field type_name
 }
 
-func init() { file_schema_proto_init() }
-func file_schema_proto_init() {
-	if File_schema_proto != nil {
+func init() { file_proto_v1_schema_proto_init() }
+func file_proto_v1_schema_proto_init() {
+	if File_proto_v1_schema_proto != nil {
 		return
 	}
-	file_schema_proto_msgTypes[2].OneofWrappers = []any{}
+	file_proto_v1_schema_proto_msgTypes[2].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_schema_proto_rawDesc), len(file_schema_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_v1_schema_proto_rawDesc), len(file_proto_v1_schema_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_schema_proto_goTypes,
-		DependencyIndexes: file_schema_proto_depIdxs,
-		MessageInfos:      file_schema_proto_msgTypes,
+		GoTypes:           file_proto_v1_schema_proto_goTypes,
+		DependencyIndexes: file_proto_v1_schema_proto_depIdxs,
+		MessageInfos:      file_proto_v1_schema_proto_msgTypes,
 	}.Build()
-	File_schema_proto = out.File
-	file_schema_proto_goTypes = nil
-	file_schema_proto_depIdxs = nil
+	File_proto_v1_schema_proto = out.File
+	file_proto_v1_schema_proto_goTypes = nil
+	file_proto_v1_schema_proto_depIdxs = nil
 }

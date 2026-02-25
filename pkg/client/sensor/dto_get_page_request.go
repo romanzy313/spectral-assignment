@@ -1,7 +1,7 @@
 package sensor
 
 import (
-	pb "spectral-assignment/gen/proto"
+	protov1 "spectral-assignment/gen/proto/v1"
 )
 
 type GetPageRequestDTO struct {
@@ -9,14 +9,14 @@ type GetPageRequestDTO struct {
 	Limit  int32 `query:"limit"`
 }
 
-func ToProtoGetPageRequest(dto GetPageRequestDTO) *pb.GetPageRequest {
-	return &pb.GetPageRequest{
+func ToProtoGetPageRequest(dto GetPageRequestDTO) *protov1.GetPageRequest {
+	return &protov1.GetPageRequest{
 		Cursor: dto.Cursor,
 		Limit:  dto.Limit,
 	}
 }
 
-func FromProtoGetPageRequest(proto *pb.GetPageRequest) GetPageRequestDTO {
+func FromProtoGetPageRequest(proto *protov1.GetPageRequest) GetPageRequestDTO {
 	return GetPageRequestDTO{
 		Cursor: proto.Cursor,
 		Limit:  proto.Limit,

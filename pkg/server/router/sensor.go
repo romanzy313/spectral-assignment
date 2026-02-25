@@ -4,7 +4,7 @@ import (
 	"context"
 	"log"
 
-	pb "spectral-assignment/gen/proto"
+	protov1 "spectral-assignment/gen/proto/v1"
 	"spectral-assignment/pkg/server/service"
 
 	"google.golang.org/grpc"
@@ -12,23 +12,23 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-type SensorRouter struct {
-	pb.UnimplementedSensorServiceServer
+type SensorRouterV1 struct {
+	protov1.UnimplementedSensorServiceServer
 
 	sensorService *service.SensorService
 }
 
-func NewSensorRouter(sensorService *service.SensorService) *SensorRouter {
-	return &SensorRouter{
+func NewSensorRouter(sensorService *service.SensorService) *SensorRouterV1 {
+	return &SensorRouterV1{
 		sensorService: sensorService,
 	}
 }
 
-func (s *SensorRouter) Register(gs *grpc.Server) {
-	pb.RegisterSensorServiceServer(gs, s)
+func (s *SensorRouterV1) Register(gs *grpc.Server) {
+	protov1.RegisterSensorServiceServer(gs, s)
 }
 
-func (s *SensorRouter) GetPage(ctx context.Context, req *pb.GetPageRequest) (*pb.GetPageResponse, error) {
+func (s *SensorRouterV1) GetPage(ctx context.Context, req *protov1.GetPageRequest) (*protov1.GetPageResponse, error) {
 	page, err := s.sensorService.GetPage(ctx, req.Cursor, req.Limit)
 
 	if err != nil {
@@ -36,9 +36,9 @@ func (s *SensorRouter) GetPage(ctx context.Context, req *pb.GetPageRequest) (*pb
 		return nil, status.Errorf(codes.Internal, "failed to get page data: %s", err.Error())
 	}
 
-	resp := &pb.GetPageResponse{
+	resp := &protov1.GetPageResponse{
 		NextCursor: nil,
-		Data:       []*pb.SensorData{},
+		Data:       []*protov1.SensorData{},
 	}
 
 	if page.Cursor != nil {
@@ -46,7 +46,7 @@ func (s *SensorRouter) GetPage(ctx context.Context, req *pb.GetPageRequest) (*pb
 	}
 
 	for _, v := range page.Data {
-		resp.Data = append(resp.Data, &pb.SensorData{
+		resp.Data = append(resp.Data, &protov1.SensorData{
 			Timestamp: v.Timestamp,
 			Value:     v.Value,
 		})
