@@ -81,9 +81,25 @@ func NewSensorMemoryRepository(data []model.SensorData) *SensorMemoryRepository 
 }
 
 func (d *SensorMemoryRepository) GetPage(ctx context.Context, cursor int64, limit int32) (*model.SensorPage, error) {
+	// find the index of where cursor is pointing at
+	start := 0
+	for i := 0; i < len(d.data); i++ {
+		if d.data[i].Timestamp >= cursor {
+			start = i
+			break
+		}
+	}
+
+	end := min(start+int(limit), len(d.data))
+
+	var nextCursor *int64
+	if end < len(d.data) {
+		nextCursor = &d.data[end].Timestamp
+	}
+
 	// returning all data for now
 	return &model.SensorPage{
-		Data:   d.data,
-		Cursor: nil,
+		Data:   d.data[start:end],
+		Cursor: nextCursor,
 	}, nil
 }

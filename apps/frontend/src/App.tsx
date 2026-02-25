@@ -7,6 +7,7 @@ const api = new ClientApi("http://localhost:12001");
 function App() {
   const { data, loadMore, canLoadMore, clearError, error } = useTimeseries({
     api,
+    limit: 1000,
   });
 
   return (
@@ -27,6 +28,7 @@ function App() {
         )}
       </div>
       <div>
+        <p>Total sensor readings: {data.length}</p>
         {data.length > 0 ? <SensorTable data={data} /> : <p>No data</p>}
       </div>
     </>

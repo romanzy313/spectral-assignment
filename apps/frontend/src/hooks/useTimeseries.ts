@@ -16,7 +16,13 @@ type SensorPage = {
   data: SensorData[];
 };
 
-export function useTimeseries({ api }: { api: ApiCaller }) {
+export function useTimeseries({
+  api,
+  limit,
+}: {
+  api: ApiCaller;
+  limit: number;
+}) {
   const [data, setData] = useState<SensorData[]>([]);
   const [cursor, setCursor] = useState<number | null>(0);
   const [error, setError] = useState("");
@@ -37,19 +43,19 @@ export function useTimeseries({ api }: { api: ApiCaller }) {
     }
 
     try {
-      const fullData = await api.apiCall<SensorPageRequest, SensorPage>(
+      const more = await api.apiCall<SensorPageRequest, SensorPage>(
         "GET",
         "/page",
         {
           cursor: cursor,
-          limit: 9999,
+          limit,
         },
       );
-      setData(fullData.data);
-      setCursor(fullData.nextCursor);
+      setData((data) => [...data, ...more.data]);
+      setCursor(more.nextCursor);
       setError("");
     } catch (error) {
-      console.error("Error fetching timeseries data:", error);
+      console.error("Error getting timeseries data:", error);
 
       setError(error instanceof Error ? error.message : `${error}`);
     }
