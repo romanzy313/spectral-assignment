@@ -28,9 +28,11 @@ function App() {
           </>
         )}
       </div>
+      <p className="text-gray-600 mb-1">
+        Total sensor data points: {data.length}
+      </p>
       <div className="max-w-lg">
-        {data.length > 0 ? <SensorTable data={data} /> : <p>No data</p>}
-        <p>Total sensor data points: {data.length}</p>
+        {data.length > 0 ? <SensorTable data={data} /> : <p></p>}
       </div>
     </div>
   );

@@ -16,6 +16,7 @@ func ToProtoGetPageRequest(dto GetPageRequestDTO) *protov1.GetPageRequest {
 	}
 }
 
+// TODO: make a pointer
 func FromProtoGetPageRequest(proto *protov1.GetPageRequest) GetPageRequestDTO {
 	return GetPageRequestDTO{
 		Cursor: proto.Cursor,

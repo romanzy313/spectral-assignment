@@ -19,6 +19,13 @@ message GetPageResponse {
   repeated SensorData data = 2;
 }
 
+message GetCountRequest {}
+
+message GetCountResponse {
+  uint64 count = 1;
+}
+
 service SensorService {
   rpc GetPage(GetPageRequest) returns (GetPageResponse);
+  rpc GetCount(GetCountRequest) returns (GetCountResponse);
 }

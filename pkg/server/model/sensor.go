@@ -9,3 +9,7 @@ type SensorPage struct {
 	Data   []SensorData
 	Cursor *int64
 }
+
+type SensorCount struct {
+	Count uint64
+}

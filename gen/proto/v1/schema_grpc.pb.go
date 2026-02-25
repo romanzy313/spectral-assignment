@@ -19,7 +19,8 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	SensorService_GetPage_FullMethodName = "/proto.v1.SensorService/GetPage"
+	SensorService_GetPage_FullMethodName  = "/proto.v1.SensorService/GetPage"
+	SensorService_GetCount_FullMethodName = "/proto.v1.SensorService/GetCount"
 )
 
 // SensorServiceClient is the client API for SensorService service.
@@ -27,6 +28,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type SensorServiceClient interface {
 	GetPage(ctx context.Context, in *GetPageRequest, opts ...grpc.CallOption) (*GetPageResponse, error)
+	GetCount(ctx context.Context, in *GetCountRequest, opts ...grpc.CallOption) (*GetCountResponse, error)
 }
 
 type sensorServiceClient struct {
@@ -47,11 +49,22 @@ func (c *sensorServiceClient) GetPage(ctx context.Context, in *GetPageRequest, o
 	return out, nil
 }
 
+func (c *sensorServiceClient) GetCount(ctx context.Context, in *GetCountRequest, opts ...grpc.CallOption) (*GetCountResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetCountResponse)
+	err := c.cc.Invoke(ctx, SensorService_GetCount_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SensorServiceServer is the server API for SensorService service.
 // All implementations must embed UnimplementedSensorServiceServer
 // for forward compatibility.
 type SensorServiceServer interface {
 	GetPage(context.Context, *GetPageRequest) (*GetPageResponse, error)
+	GetCount(context.Context, *GetCountRequest) (*GetCountResponse, error)
 	mustEmbedUnimplementedSensorServiceServer()
 }
 
@@ -64,6 +77,9 @@ type UnimplementedSensorServiceServer struct{}
 
 func (UnimplementedSensorServiceServer) GetPage(context.Context, *GetPageRequest) (*GetPageResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetPage not implemented")
+}
+func (UnimplementedSensorServiceServer) GetCount(context.Context, *GetCountRequest) (*GetCountResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetCount not implemented")
 }
 func (UnimplementedSensorServiceServer) mustEmbedUnimplementedSensorServiceServer() {}
 func (UnimplementedSensorServiceServer) testEmbeddedByValue()                       {}
@@ -104,6 +120,24 @@ func _SensorService_GetPage_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SensorService_GetCount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetCountRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SensorServiceServer).GetCount(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SensorService_GetCount_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SensorServiceServer).GetCount(ctx, req.(*GetCountRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // SensorService_ServiceDesc is the grpc.ServiceDesc for SensorService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -114,6 +148,10 @@ var SensorService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetPage",
 			Handler:    _SensorService_GetPage_Handler,
+		},
+		{
+			MethodName: "GetCount",
+			Handler:    _SensorService_GetCount_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -29,7 +29,7 @@ func (s *SensorRouterV1) Register(gs *grpc.Server) {
 }
 
 func (s *SensorRouterV1) GetPage(ctx context.Context, req *protov1.GetPageRequest) (*protov1.GetPageResponse, error) {
-	page, err := s.sensorService.GetPage(ctx, req.Cursor, req.Limit)
+	data, err := s.sensorService.GetPage(ctx, req.Cursor, req.Limit)
 
 	if err != nil {
 		log.Printf("failed to get page data: %s", err.Error())
@@ -41,15 +41,30 @@ func (s *SensorRouterV1) GetPage(ctx context.Context, req *protov1.GetPageReques
 		Data:       []*protov1.SensorData{},
 	}
 
-	if page.Cursor != nil {
-		resp.NextCursor = page.Cursor
+	if data.Cursor != nil {
+		resp.NextCursor = data.Cursor
 	}
 
-	for _, v := range page.Data {
+	for _, v := range data.Data {
 		resp.Data = append(resp.Data, &protov1.SensorData{
 			Timestamp: v.Timestamp,
 			Value:     v.Value,
 		})
+	}
+
+	return resp, nil
+}
+
+func (s *SensorRouterV1) GetCount(ctx context.Context, _ *protov1.GetCountRequest) (*protov1.GetCountResponse, error) {
+	data, err := s.sensorService.GetCount(ctx)
+
+	if err != nil {
+		log.Printf("failed to get count data: %s", err.Error())
+		return nil, status.Errorf(codes.Internal, "failed to get count data: %s", err.Error())
+	}
+
+	resp := &protov1.GetCountResponse{
+		Count: data.Count,
 	}
 
 	return resp, nil

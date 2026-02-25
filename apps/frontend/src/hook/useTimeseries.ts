@@ -43,9 +43,9 @@ export function useTimeseries({
     }
 
     try {
-      const more = await api.apiCall<SensorPageRequest, SensorPage>(
+      const page = await api.apiCall<SensorPageRequest, SensorPage>(
         "GET",
-        "/api/v1/sensor",
+        "/api/v1/sensor/data",
         {
           cursor: cursor,
           limit,
@@ -61,8 +61,8 @@ export function useTimeseries({
           })),
         }),
       );
-      setData((data) => [...data, ...more.data]);
-      setCursor(more.nextCursor);
+      setData((data) => [...data, ...page.data]);
+      setCursor(page.nextCursor);
       setError("");
     } catch (error) {
       console.error("Error getting timeseries data:", error);

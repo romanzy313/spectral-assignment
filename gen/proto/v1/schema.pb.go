@@ -177,6 +177,86 @@ func (x *GetPageResponse) GetData() []*SensorData {
 	return nil
 }
 
+type GetCountRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetCountRequest) Reset() {
+	*x = GetCountRequest{}
+	mi := &file_proto_v1_schema_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetCountRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetCountRequest) ProtoMessage() {}
+
+func (x *GetCountRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_v1_schema_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetCountRequest.ProtoReflect.Descriptor instead.
+func (*GetCountRequest) Descriptor() ([]byte, []int) {
+	return file_proto_v1_schema_proto_rawDescGZIP(), []int{3}
+}
+
+type GetCountResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Count         uint64                 `protobuf:"varint,1,opt,name=count,proto3" json:"count,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetCountResponse) Reset() {
+	*x = GetCountResponse{}
+	mi := &file_proto_v1_schema_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetCountResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetCountResponse) ProtoMessage() {}
+
+func (x *GetCountResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_v1_schema_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetCountResponse.ProtoReflect.Descriptor instead.
+func (*GetCountResponse) Descriptor() ([]byte, []int) {
+	return file_proto_v1_schema_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *GetCountResponse) GetCount() uint64 {
+	if x != nil {
+		return x.Count
+	}
+	return 0
+}
+
 var File_proto_v1_schema_proto protoreflect.FileDescriptor
 
 const file_proto_v1_schema_proto_rawDesc = "" +
@@ -193,9 +273,13 @@ const file_proto_v1_schema_proto_rawDesc = "" +
 	"\vnext_cursor\x18\x01 \x01(\x03H\x00R\n" +
 	"nextCursor\x88\x01\x01\x12(\n" +
 	"\x04data\x18\x02 \x03(\v2\x14.proto.v1.SensorDataR\x04dataB\x0e\n" +
-	"\f_next_cursor2O\n" +
+	"\f_next_cursor\"\x11\n" +
+	"\x0fGetCountRequest\"(\n" +
+	"\x10GetCountResponse\x12\x14\n" +
+	"\x05count\x18\x01 \x01(\x04R\x05count2\x92\x01\n" +
 	"\rSensorService\x12>\n" +
-	"\aGetPage\x12\x18.proto.v1.GetPageRequest\x1a\x19.proto.v1.GetPageResponseB*Z(spectral-assignment/gen/proto/v1;protov1b\x06proto3"
+	"\aGetPage\x12\x18.proto.v1.GetPageRequest\x1a\x19.proto.v1.GetPageResponse\x12A\n" +
+	"\bGetCount\x12\x19.proto.v1.GetCountRequest\x1a\x1a.proto.v1.GetCountResponseB*Z(spectral-assignment/gen/proto/v1;protov1b\x06proto3"
 
 var (
 	file_proto_v1_schema_proto_rawDescOnce sync.Once
@@ -209,18 +293,22 @@ func file_proto_v1_schema_proto_rawDescGZIP() []byte {
 	return file_proto_v1_schema_proto_rawDescData
 }
 
-var file_proto_v1_schema_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_proto_v1_schema_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_proto_v1_schema_proto_goTypes = []any{
-	(*SensorData)(nil),      // 0: proto.v1.SensorData
-	(*GetPageRequest)(nil),  // 1: proto.v1.GetPageRequest
-	(*GetPageResponse)(nil), // 2: proto.v1.GetPageResponse
+	(*SensorData)(nil),       // 0: proto.v1.SensorData
+	(*GetPageRequest)(nil),   // 1: proto.v1.GetPageRequest
+	(*GetPageResponse)(nil),  // 2: proto.v1.GetPageResponse
+	(*GetCountRequest)(nil),  // 3: proto.v1.GetCountRequest
+	(*GetCountResponse)(nil), // 4: proto.v1.GetCountResponse
 }
 var file_proto_v1_schema_proto_depIdxs = []int32{
 	0, // 0: proto.v1.GetPageResponse.data:type_name -> proto.v1.SensorData
 	1, // 1: proto.v1.SensorService.GetPage:input_type -> proto.v1.GetPageRequest
-	2, // 2: proto.v1.SensorService.GetPage:output_type -> proto.v1.GetPageResponse
-	2, // [2:3] is the sub-list for method output_type
-	1, // [1:2] is the sub-list for method input_type
+	3, // 2: proto.v1.SensorService.GetCount:input_type -> proto.v1.GetCountRequest
+	2, // 3: proto.v1.SensorService.GetPage:output_type -> proto.v1.GetPageResponse
+	4, // 4: proto.v1.SensorService.GetCount:output_type -> proto.v1.GetCountResponse
+	3, // [3:5] is the sub-list for method output_type
+	1, // [1:3] is the sub-list for method input_type
 	1, // [1:1] is the sub-list for extension type_name
 	1, // [1:1] is the sub-list for extension extendee
 	0, // [0:1] is the sub-list for field type_name
@@ -238,7 +326,7 @@ func file_proto_v1_schema_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_v1_schema_proto_rawDesc), len(file_proto_v1_schema_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   3,
+			NumMessages:   5,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

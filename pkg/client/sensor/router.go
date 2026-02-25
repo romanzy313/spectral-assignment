@@ -18,7 +18,7 @@ func NewRouter(grpc GrpcClient) *Router {
 
 func (r *Router) Register(e *echo.Echo) {
 
-	e.GET("/api/v1/sensor", func(c *echo.Context) error {
+	e.GET("/api/v1/sensor/data", func(c *echo.Context) error {
 		ctx := c.Request().Context()
 
 		var bindReq GetPageRequestDTO
@@ -40,5 +40,17 @@ func (r *Router) Register(e *echo.Echo) {
 		}
 
 		return c.JSON(200, FromProtoGetPageResponse(resp))
+	})
+
+	e.GET("/api/v1/sensor/count", func(c *echo.Context) error {
+		ctx := c.Request().Context()
+
+		resp, err := r.grpc.GetCount(ctx)
+		if err != nil {
+			c.Logger().Error("failed to get page from server", "error", err)
+			return c.String(http.StatusInternalServerError, "internal server error")
+		}
+
+		return c.JSON(200, FromProtoGetCountResponse(resp))
 	})
 }
