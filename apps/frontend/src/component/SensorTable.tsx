@@ -6,21 +6,30 @@ type Props = {
 
 export function SensorTable({ data }: Props) {
   return (
-    <table>
-      <thead>
-        <tr>
-          <th>Time</th>
-          <th>Value</th>
-        </tr>
-      </thead>
-      <tbody>
-        {data.map((item, index) => (
-          <tr key={index}>
-            <td>{item.timestamp}</td>
-            <td>{item.value}</td>
+    <div className="rounded-lg border border-gray-200 shadow-sm max-h-160 overflow-y-auto">
+      <table className="w-full text-sm text-left">
+        <thead className="bg-gray-800 text-gray-100 text-xs tracking-wider sticky top-0">
+          <tr>
+            <th className="px-6 py-3">TIME</th>
+            <th className="px-6 py-3">VALUE (kWh?)</th>
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody className="divide-y divide-gray-200">
+          {data.map((item, index) => (
+            <tr
+              key={index}
+              className="bg-white odd:bg-gray-50 hover:bg-primary-500/30 transition-colors duration-150"
+            >
+              <td className="px-6 py-3 text-gray-700 font-mono">
+                {new Date(item.timestamp).toISOString()}
+              </td>
+              <td className="px-6 py-3 text-gray-900 font-medium">
+                {item.value}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }
