@@ -20,3 +20,8 @@ run-client:
 .PHONY: run-server
 run-server:
 	go run cmd/server/main.go
+
+.PHONY: run-frontend
+run-frontend:
+	pnpm --filter frontend build
+	pnpm --filter frontend preview
