@@ -26,6 +26,7 @@ func Run() {
 		log.Fatalf("failed to initialize client: %s", err.Error())
 		return
 	}
+	defer sensorClient.Close()
 
 	sensorRouter := sensor.NewRouter(sensorClient)
 	sensorRouter.Register(e)
