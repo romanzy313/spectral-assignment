@@ -19,101 +19,101 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	HelloService_Echo_FullMethodName = "/proto.HelloService/Echo"
+	SensorService_GetPage_FullMethodName = "/proto.SensorService/GetPage"
 )
 
-// HelloServiceClient is the client API for HelloService service.
+// SensorServiceClient is the client API for SensorService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type HelloServiceClient interface {
-	Echo(ctx context.Context, in *EchoRequest, opts ...grpc.CallOption) (*EchoResponse, error)
+type SensorServiceClient interface {
+	GetPage(ctx context.Context, in *GetPageRequest, opts ...grpc.CallOption) (*GetPageResponse, error)
 }
 
-type helloServiceClient struct {
+type sensorServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewHelloServiceClient(cc grpc.ClientConnInterface) HelloServiceClient {
-	return &helloServiceClient{cc}
+func NewSensorServiceClient(cc grpc.ClientConnInterface) SensorServiceClient {
+	return &sensorServiceClient{cc}
 }
 
-func (c *helloServiceClient) Echo(ctx context.Context, in *EchoRequest, opts ...grpc.CallOption) (*EchoResponse, error) {
+func (c *sensorServiceClient) GetPage(ctx context.Context, in *GetPageRequest, opts ...grpc.CallOption) (*GetPageResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(EchoResponse)
-	err := c.cc.Invoke(ctx, HelloService_Echo_FullMethodName, in, out, cOpts...)
+	out := new(GetPageResponse)
+	err := c.cc.Invoke(ctx, SensorService_GetPage_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// HelloServiceServer is the server API for HelloService service.
-// All implementations must embed UnimplementedHelloServiceServer
+// SensorServiceServer is the server API for SensorService service.
+// All implementations must embed UnimplementedSensorServiceServer
 // for forward compatibility.
-type HelloServiceServer interface {
-	Echo(context.Context, *EchoRequest) (*EchoResponse, error)
-	mustEmbedUnimplementedHelloServiceServer()
+type SensorServiceServer interface {
+	GetPage(context.Context, *GetPageRequest) (*GetPageResponse, error)
+	mustEmbedUnimplementedSensorServiceServer()
 }
 
-// UnimplementedHelloServiceServer must be embedded to have
+// UnimplementedSensorServiceServer must be embedded to have
 // forward compatible implementations.
 //
 // NOTE: this should be embedded by value instead of pointer to avoid a nil
 // pointer dereference when methods are called.
-type UnimplementedHelloServiceServer struct{}
+type UnimplementedSensorServiceServer struct{}
 
-func (UnimplementedHelloServiceServer) Echo(context.Context, *EchoRequest) (*EchoResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method Echo not implemented")
+func (UnimplementedSensorServiceServer) GetPage(context.Context, *GetPageRequest) (*GetPageResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetPage not implemented")
 }
-func (UnimplementedHelloServiceServer) mustEmbedUnimplementedHelloServiceServer() {}
-func (UnimplementedHelloServiceServer) testEmbeddedByValue()                      {}
+func (UnimplementedSensorServiceServer) mustEmbedUnimplementedSensorServiceServer() {}
+func (UnimplementedSensorServiceServer) testEmbeddedByValue()                       {}
 
-// UnsafeHelloServiceServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to HelloServiceServer will
+// UnsafeSensorServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to SensorServiceServer will
 // result in compilation errors.
-type UnsafeHelloServiceServer interface {
-	mustEmbedUnimplementedHelloServiceServer()
+type UnsafeSensorServiceServer interface {
+	mustEmbedUnimplementedSensorServiceServer()
 }
 
-func RegisterHelloServiceServer(s grpc.ServiceRegistrar, srv HelloServiceServer) {
-	// If the following call panics, it indicates UnimplementedHelloServiceServer was
+func RegisterSensorServiceServer(s grpc.ServiceRegistrar, srv SensorServiceServer) {
+	// If the following call panics, it indicates UnimplementedSensorServiceServer was
 	// embedded by pointer and is nil.  This will cause panics if an
 	// unimplemented method is ever invoked, so we test this at initialization
 	// time to prevent it from happening at runtime later due to I/O.
 	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
 		t.testEmbeddedByValue()
 	}
-	s.RegisterService(&HelloService_ServiceDesc, srv)
+	s.RegisterService(&SensorService_ServiceDesc, srv)
 }
 
-func _HelloService_Echo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(EchoRequest)
+func _SensorService_GetPage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetPageRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(HelloServiceServer).Echo(ctx, in)
+		return srv.(SensorServiceServer).GetPage(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: HelloService_Echo_FullMethodName,
+		FullMethod: SensorService_GetPage_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(HelloServiceServer).Echo(ctx, req.(*EchoRequest))
+		return srv.(SensorServiceServer).GetPage(ctx, req.(*GetPageRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// HelloService_ServiceDesc is the grpc.ServiceDesc for HelloService service.
+// SensorService_ServiceDesc is the grpc.ServiceDesc for SensorService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var HelloService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "proto.HelloService",
-	HandlerType: (*HelloServiceServer)(nil),
+var SensorService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "proto.SensorService",
+	HandlerType: (*SensorServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "Echo",
-			Handler:    _HelloService_Echo_Handler,
+			MethodName: "GetPage",
+			Handler:    _SensorService_GetPage_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -8,5 +8,5 @@ import (
 )
 
 type SensorRepository interface {
-	GetSensorReadings(ctx context.Context, cursor time.Time, limit int) (*model.SensorPage, error)
+	GetPage(ctx context.Context, cursor time.Time, limit int) (*model.SensorPage, error)
 }

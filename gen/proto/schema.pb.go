@@ -74,27 +74,28 @@ func (x *SensorReading) GetValue() float64 {
 	return 0
 }
 
-type EchoRequest struct {
+type GetPageRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Name          *string                `protobuf:"bytes,1,opt,name=name,proto3,oneof" json:"name,omitempty"`
+	Cursor        *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=cursor,proto3" json:"cursor,omitempty"`
+	Limit         int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *EchoRequest) Reset() {
-	*x = EchoRequest{}
+func (x *GetPageRequest) Reset() {
+	*x = GetPageRequest{}
 	mi := &file_schema_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *EchoRequest) String() string {
+func (x *GetPageRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*EchoRequest) ProtoMessage() {}
+func (*GetPageRequest) ProtoMessage() {}
 
-func (x *EchoRequest) ProtoReflect() protoreflect.Message {
+func (x *GetPageRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_schema_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -106,39 +107,47 @@ func (x *EchoRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use EchoRequest.ProtoReflect.Descriptor instead.
-func (*EchoRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use GetPageRequest.ProtoReflect.Descriptor instead.
+func (*GetPageRequest) Descriptor() ([]byte, []int) {
 	return file_schema_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *EchoRequest) GetName() string {
-	if x != nil && x.Name != nil {
-		return *x.Name
+func (x *GetPageRequest) GetCursor() *timestamppb.Timestamp {
+	if x != nil {
+		return x.Cursor
 	}
-	return ""
+	return nil
 }
 
-type EchoResponse struct {
+func (x *GetPageRequest) GetLimit() int32 {
+	if x != nil {
+		return x.Limit
+	}
+	return 0
+}
+
+type GetPageResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Message       string                 `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
+	NextCursor    *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=next_cursor,json=nextCursor,proto3,oneof" json:"next_cursor,omitempty"`
+	Data          []*SensorReading       `protobuf:"bytes,2,rep,name=data,proto3" json:"data,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *EchoResponse) Reset() {
-	*x = EchoResponse{}
+func (x *GetPageResponse) Reset() {
+	*x = GetPageResponse{}
 	mi := &file_schema_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *EchoResponse) String() string {
+func (x *GetPageResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*EchoResponse) ProtoMessage() {}
+func (*GetPageResponse) ProtoMessage() {}
 
-func (x *EchoResponse) ProtoReflect() protoreflect.Message {
+func (x *GetPageResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_schema_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -150,16 +159,23 @@ func (x *EchoResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use EchoResponse.ProtoReflect.Descriptor instead.
-func (*EchoResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use GetPageResponse.ProtoReflect.Descriptor instead.
+func (*GetPageResponse) Descriptor() ([]byte, []int) {
 	return file_schema_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *EchoResponse) GetMessage() string {
+func (x *GetPageResponse) GetNextCursor() *timestamppb.Timestamp {
 	if x != nil {
-		return x.Message
+		return x.NextCursor
 	}
-	return ""
+	return nil
+}
+
+func (x *GetPageResponse) GetData() []*SensorReading {
+	if x != nil {
+		return x.Data
+	}
+	return nil
 }
 
 var File_schema_proto protoreflect.FileDescriptor
@@ -169,14 +185,17 @@ const file_schema_proto_rawDesc = "" +
 	"\fschema.proto\x12\x05proto\x1a\x1fgoogle/protobuf/timestamp.proto\"_\n" +
 	"\rSensorReading\x128\n" +
 	"\ttimestamp\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\ttimestamp\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\x01R\x05value\"/\n" +
-	"\vEchoRequest\x12\x17\n" +
-	"\x04name\x18\x01 \x01(\tH\x00R\x04name\x88\x01\x01B\a\n" +
-	"\x05_name\"(\n" +
-	"\fEchoResponse\x12\x18\n" +
-	"\amessage\x18\x01 \x01(\tR\amessage2?\n" +
-	"\fHelloService\x12/\n" +
-	"\x04Echo\x12\x12.proto.EchoRequest\x1a\x13.proto.EchoResponseB\x1fZ\x1dspectral-assignment/gen/protob\x06proto3"
+	"\x05value\x18\x02 \x01(\x01R\x05value\"Z\n" +
+	"\x0eGetPageRequest\x122\n" +
+	"\x06cursor\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\x06cursor\x12\x14\n" +
+	"\x05limit\x18\x02 \x01(\x05R\x05limit\"\x8d\x01\n" +
+	"\x0fGetPageResponse\x12@\n" +
+	"\vnext_cursor\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampH\x00R\n" +
+	"nextCursor\x88\x01\x01\x12(\n" +
+	"\x04data\x18\x02 \x03(\v2\x14.proto.SensorReadingR\x04dataB\x0e\n" +
+	"\f_next_cursor2I\n" +
+	"\rSensorService\x128\n" +
+	"\aGetPage\x12\x15.proto.GetPageRequest\x1a\x16.proto.GetPageResponseB\x1fZ\x1dspectral-assignment/gen/protob\x06proto3"
 
 var (
 	file_schema_proto_rawDescOnce sync.Once
@@ -193,19 +212,22 @@ func file_schema_proto_rawDescGZIP() []byte {
 var file_schema_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_schema_proto_goTypes = []any{
 	(*SensorReading)(nil),         // 0: proto.SensorReading
-	(*EchoRequest)(nil),           // 1: proto.EchoRequest
-	(*EchoResponse)(nil),          // 2: proto.EchoResponse
+	(*GetPageRequest)(nil),        // 1: proto.GetPageRequest
+	(*GetPageResponse)(nil),       // 2: proto.GetPageResponse
 	(*timestamppb.Timestamp)(nil), // 3: google.protobuf.Timestamp
 }
 var file_schema_proto_depIdxs = []int32{
 	3, // 0: proto.SensorReading.timestamp:type_name -> google.protobuf.Timestamp
-	1, // 1: proto.HelloService.Echo:input_type -> proto.EchoRequest
-	2, // 2: proto.HelloService.Echo:output_type -> proto.EchoResponse
-	2, // [2:3] is the sub-list for method output_type
-	1, // [1:2] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	3, // 1: proto.GetPageRequest.cursor:type_name -> google.protobuf.Timestamp
+	3, // 2: proto.GetPageResponse.next_cursor:type_name -> google.protobuf.Timestamp
+	0, // 3: proto.GetPageResponse.data:type_name -> proto.SensorReading
+	1, // 4: proto.SensorService.GetPage:input_type -> proto.GetPageRequest
+	2, // 5: proto.SensorService.GetPage:output_type -> proto.GetPageResponse
+	5, // [5:6] is the sub-list for method output_type
+	4, // [4:5] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_schema_proto_init() }
@@ -213,7 +235,7 @@ func file_schema_proto_init() {
 	if File_schema_proto != nil {
 		return
 	}
-	file_schema_proto_msgTypes[1].OneofWrappers = []any{}
+	file_schema_proto_msgTypes[2].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

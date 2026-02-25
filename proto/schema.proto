@@ -11,14 +11,16 @@ message SensorReading {
   double value = 2;
 }
 
-message EchoRequest {
-  optional string name = 1;
+message GetPageRequest {
+  google.protobuf.Timestamp cursor = 1;
+  int32 limit = 2;
 }
 
-message EchoResponse {
-  string message = 1;
+message GetPageResponse {
+  optional google.protobuf.Timestamp next_cursor = 1;
+  repeated SensorReading data = 2;
 }
 
-service HelloService {
-  rpc Echo(EchoRequest) returns (EchoResponse);
+service SensorService {
+  rpc GetPage(GetPageRequest) returns (GetPageResponse);
 }

@@ -2,17 +2,19 @@ package router
 
 import (
 	"context"
-	"fmt"
 	"log"
 
 	pb "spectral-assignment/gen/proto"
 	"spectral-assignment/pkg/server/service"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 type SensorRouter struct {
-	pb.UnimplementedHelloServiceServer
+	pb.UnimplementedSensorServiceServer
 
 	sensorService *service.SensorService
 }
@@ -24,19 +26,30 @@ func NewSensorRouter(sensorService *service.SensorService) *SensorRouter {
 }
 
 func (s *SensorRouter) Register(gs *grpc.Server) {
-	pb.RegisterHelloServiceServer(gs, s)
+	pb.RegisterSensorServiceServer(gs, s)
 }
 
-func (s *SensorRouter) Echo(ctx context.Context, req *pb.EchoRequest) (*pb.EchoResponse, error) {
-	var name string
-	if req.Name != nil {
-		name = *req.Name
-	} else {
-		name = "World"
+func (s *SensorRouter) GetPage(ctx context.Context, req *pb.GetPageRequest) (*pb.GetPageResponse, error) {
+	page, err := s.sensorService.GetPage(ctx, req.Cursor.AsTime(), int(req.Limit))
+
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "something went wrong: %w", err)
 	}
 
-	resp := &pb.EchoResponse{
-		Message: fmt.Sprintf("Hello, %s", name),
+	resp := &pb.GetPageResponse{
+		NextCursor: nil,
+		Data:       []*pb.SensorReading{},
+	}
+
+	if page.Cursor != nil {
+		resp.NextCursor = timestamppb.New(*page.Cursor)
+	}
+
+	for _, reading := range page.Data {
+		resp.Data = append(resp.Data, &pb.SensorReading{
+			Timestamp: timestamppb.New(reading.Timestamp),
+			Value:     reading.Value,
+		})
 	}
 
 	log.Printf("responding with %v\n", resp)

@@ -69,7 +69,7 @@ func NewSensorMemoryRepository(data []model.SensorData) *SensorMemoryRepository 
 	}
 }
 
-func (d *SensorMemoryRepository) GetSensorReadings(ctx context.Context, cursor time.Time, limit int) (*model.SensorPage, error) {
+func (d *SensorMemoryRepository) GetPage(ctx context.Context, cursor time.Time, limit int) (*model.SensorPage, error) {
 	// returning all data for now
 	return &model.SensorPage{
 		Data:   d.data,

@@ -17,8 +17,8 @@ func NewSensorService(repo repository.SensorRepository) *SensorService {
 	}
 }
 
-func (s *SensorService) GetSensorReadings(ctx context.Context, cursor time.Time, limit int) (*model.SensorPage, error) {
-	page, err := s.repo.GetSensorReadings(ctx, cursor, limit)
+func (s *SensorService) GetPage(ctx context.Context, cursor time.Time, limit int) (*model.SensorPage, error) {
+	page, err := s.repo.GetPage(ctx, cursor, limit)
 	if err != nil {
 		return nil, err
 	}
