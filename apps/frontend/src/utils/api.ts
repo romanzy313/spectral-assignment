@@ -1,13 +1,17 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 export interface ApiCaller {
   apiCall<T, U>(
     method: "POST" | "PUT" | "DELETE",
     path: string,
     data: T,
+    responseConverter?: (data: any) => U,
   ): Promise<U>;
   apiCall<T extends Record<string, string | number | boolean | null>, U>(
     method: "GET",
     path: string,
     data: T,
+    responseConverter?: (data: any) => U,
   ): Promise<U>;
 }
 
@@ -18,6 +22,7 @@ export class ClientApi implements ApiCaller {
     method: "GET" | "POST" | "PUT" | "DELETE",
     path: string,
     data: T,
+    responseConverter?: (data: any) => U,
   ): Promise<U> {
     const url = new URL(path, this.baseUrl);
     const options: RequestInit = {
@@ -37,7 +42,11 @@ export class ClientApi implements ApiCaller {
 
     try {
       const response = await fetch(url, options);
-      return await response.json();
+      const data = await response.json();
+      if (responseConverter) {
+        return responseConverter(data);
+      }
+      return data;
     } catch (cause) {
       throw new ApiError("Failed to fetch", cause);
     }

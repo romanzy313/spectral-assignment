@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import type { ApiCaller } from "../utils/api";
 
 export type SensorData = {
-  t: number;
-  v: number;
+  timestamp: number;
+  value: number;
 };
 
 type SensorPageRequest = {
@@ -50,6 +50,13 @@ export function useTimeseries({
           cursor: cursor,
           limit,
         },
+        (res: {
+          nextCursor: number | null;
+          data: { t: number; v: number }[];
+        }) => ({
+          nextCursor: res.nextCursor,
+          data: res.data.map(({ t, v }) => ({ timestamp: t, value: v })),
+        }),
       );
       setData((data) => [...data, ...more.data]);
       setCursor(more.nextCursor);

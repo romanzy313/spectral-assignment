@@ -16,8 +16,8 @@ export function SensorTable({ data }: Props) {
       <tbody>
         {data.map((item, index) => (
           <tr key={index}>
-            <td>{item.t}</td>
-            <td>{item.v}</td>
+            <td>{item.timestamp}</td>
+            <td>{item.value}</td>
           </tr>
         ))}
       </tbody>
