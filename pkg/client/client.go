@@ -4,13 +4,11 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"time"
 
 	pb "spectral-assignment/gen/proto"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
-	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/labstack/echo/v5"
 	"github.com/labstack/echo/v5/middleware"
@@ -28,7 +26,7 @@ func getAll(ctx context.Context) (*pb.GetPageResponse, error) {
 	client := pb.NewSensorServiceClient(conn)
 
 	resp, err := client.GetPage(ctx, &pb.GetPageRequest{
-		Cursor: timestamppb.New(time.Time{}),
+		Cursor: 0,
 		Limit:  99999,
 	})
 	if err != nil {
@@ -53,6 +51,8 @@ func Run() {
 			c.Logger().Error("failed to getAll", "error", err.Error())
 			return echo.NewHTTPError(http.StatusInternalServerError, "Something went wrong")
 		}
+
+		// fmt.Println("DATA", resp)
 		// TODO: wrap into a DTO
 		return c.String(500, "Not implemented yet")
 	})

@@ -40,13 +40,15 @@ func ReadCsvData(fileName string) ([]model.SensorData, error) {
 		if err != nil {
 			return nil, fmt.Errorf("failed to parse time: %w", err)
 		}
+		timestamp := time.Unix()
+
 		value, err := strconv.ParseFloat(parts[1], 64)
 		if err != nil {
 			return nil, fmt.Errorf("failed to parse value: %w", err)
 		}
 
 		result = append(result, model.SensorData{
-			Timestamp: time,
+			Timestamp: timestamp,
 			Value:     value,
 		})
 	}
@@ -60,6 +62,8 @@ func ReadCsvData(fileName string) ([]model.SensorData, error) {
 }
 
 type SensorMemoryRepository struct {
+	SensorRepository
+
 	data []model.SensorData
 }
 
@@ -69,7 +73,7 @@ func NewSensorMemoryRepository(data []model.SensorData) *SensorMemoryRepository 
 	}
 }
 
-func (d *SensorMemoryRepository) GetPage(ctx context.Context, cursor time.Time, limit int) (*model.SensorPage, error) {
+func (d *SensorMemoryRepository) GetPage(ctx context.Context, cursor int64, limit int32) (*model.SensorPage, error) {
 	// returning all data for now
 	return &model.SensorPage{
 		Data:   d.data,

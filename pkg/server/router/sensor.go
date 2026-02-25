@@ -10,7 +10,6 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 type SensorRouter struct {
@@ -30,7 +29,7 @@ func (s *SensorRouter) Register(gs *grpc.Server) {
 }
 
 func (s *SensorRouter) GetPage(ctx context.Context, req *pb.GetPageRequest) (*pb.GetPageResponse, error) {
-	page, err := s.sensorService.GetPage(ctx, req.Cursor.AsTime(), int(req.Limit))
+	page, err := s.sensorService.GetPage(ctx, req.Cursor, req.Limit)
 
 	if err != nil {
 		log.Printf("failed to get page data: %s", err.Error())
@@ -39,17 +38,17 @@ func (s *SensorRouter) GetPage(ctx context.Context, req *pb.GetPageRequest) (*pb
 
 	resp := &pb.GetPageResponse{
 		NextCursor: nil,
-		Data:       []*pb.SensorReading{},
+		Data:       []*pb.SensorData{},
 	}
 
 	if page.Cursor != nil {
-		resp.NextCursor = timestamppb.New(*page.Cursor)
+		resp.NextCursor = page.Cursor
 	}
 
-	for _, reading := range page.Data {
-		resp.Data = append(resp.Data, &pb.SensorReading{
-			Timestamp: timestamppb.New(reading.Timestamp),
-			Value:     reading.Value,
+	for _, v := range page.Data {
+		resp.Data = append(resp.Data, &pb.SensorData{
+			Timestamp: v.Timestamp,
+			Value:     v.Value,
 		})
 	}
 

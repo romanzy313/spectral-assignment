@@ -2,11 +2,10 @@ package repository
 
 import (
 	"context"
-	"time"
 
 	"spectral-assignment/pkg/server/model"
 )
 
 type SensorRepository interface {
-	GetPage(ctx context.Context, cursor time.Time, limit int) (*model.SensorPage, error)
+	GetPage(ctx context.Context, cursor int64, limit int32) (*model.SensorPage, error)
 }

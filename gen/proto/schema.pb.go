@@ -9,7 +9,7 @@ package proto
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
+	_ "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -22,28 +22,28 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type SensorReading struct {
+type SensorData struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Timestamp     *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
+	Timestamp     int64                  `protobuf:"varint,1,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
 	Value         float64                `protobuf:"fixed64,2,opt,name=value,proto3" json:"value,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *SensorReading) Reset() {
-	*x = SensorReading{}
+func (x *SensorData) Reset() {
+	*x = SensorData{}
 	mi := &file_schema_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *SensorReading) String() string {
+func (x *SensorData) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*SensorReading) ProtoMessage() {}
+func (*SensorData) ProtoMessage() {}
 
-func (x *SensorReading) ProtoReflect() protoreflect.Message {
+func (x *SensorData) ProtoReflect() protoreflect.Message {
 	mi := &file_schema_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -55,19 +55,19 @@ func (x *SensorReading) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use SensorReading.ProtoReflect.Descriptor instead.
-func (*SensorReading) Descriptor() ([]byte, []int) {
+// Deprecated: Use SensorData.ProtoReflect.Descriptor instead.
+func (*SensorData) Descriptor() ([]byte, []int) {
 	return file_schema_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *SensorReading) GetTimestamp() *timestamppb.Timestamp {
+func (x *SensorData) GetTimestamp() int64 {
 	if x != nil {
 		return x.Timestamp
 	}
-	return nil
+	return 0
 }
 
-func (x *SensorReading) GetValue() float64 {
+func (x *SensorData) GetValue() float64 {
 	if x != nil {
 		return x.Value
 	}
@@ -76,7 +76,7 @@ func (x *SensorReading) GetValue() float64 {
 
 type GetPageRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Cursor        *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=cursor,proto3" json:"cursor,omitempty"`
+	Cursor        int64                  `protobuf:"varint,1,opt,name=cursor,proto3" json:"cursor,omitempty"`
 	Limit         int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -112,11 +112,11 @@ func (*GetPageRequest) Descriptor() ([]byte, []int) {
 	return file_schema_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *GetPageRequest) GetCursor() *timestamppb.Timestamp {
+func (x *GetPageRequest) GetCursor() int64 {
 	if x != nil {
 		return x.Cursor
 	}
-	return nil
+	return 0
 }
 
 func (x *GetPageRequest) GetLimit() int32 {
@@ -128,8 +128,8 @@ func (x *GetPageRequest) GetLimit() int32 {
 
 type GetPageResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	NextCursor    *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=next_cursor,json=nextCursor,proto3,oneof" json:"next_cursor,omitempty"`
-	Data          []*SensorReading       `protobuf:"bytes,2,rep,name=data,proto3" json:"data,omitempty"`
+	NextCursor    *int64                 `protobuf:"varint,1,opt,name=next_cursor,json=nextCursor,proto3,oneof" json:"next_cursor,omitempty"`
+	Data          []*SensorData          `protobuf:"bytes,2,rep,name=data,proto3" json:"data,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -164,14 +164,14 @@ func (*GetPageResponse) Descriptor() ([]byte, []int) {
 	return file_schema_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *GetPageResponse) GetNextCursor() *timestamppb.Timestamp {
-	if x != nil {
-		return x.NextCursor
+func (x *GetPageResponse) GetNextCursor() int64 {
+	if x != nil && x.NextCursor != nil {
+		return *x.NextCursor
 	}
-	return nil
+	return 0
 }
 
-func (x *GetPageResponse) GetData() []*SensorReading {
+func (x *GetPageResponse) GetData() []*SensorData {
 	if x != nil {
 		return x.Data
 	}
@@ -182,17 +182,18 @@ var File_schema_proto protoreflect.FileDescriptor
 
 const file_schema_proto_rawDesc = "" +
 	"\n" +
-	"\fschema.proto\x12\x05proto\x1a\x1fgoogle/protobuf/timestamp.proto\"_\n" +
-	"\rSensorReading\x128\n" +
-	"\ttimestamp\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\ttimestamp\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\x01R\x05value\"Z\n" +
-	"\x0eGetPageRequest\x122\n" +
-	"\x06cursor\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\x06cursor\x12\x14\n" +
-	"\x05limit\x18\x02 \x01(\x05R\x05limit\"\x8d\x01\n" +
-	"\x0fGetPageResponse\x12@\n" +
-	"\vnext_cursor\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampH\x00R\n" +
-	"nextCursor\x88\x01\x01\x12(\n" +
-	"\x04data\x18\x02 \x03(\v2\x14.proto.SensorReadingR\x04dataB\x0e\n" +
+	"\fschema.proto\x12\x05proto\x1a\x1fgoogle/protobuf/timestamp.proto\"@\n" +
+	"\n" +
+	"SensorData\x12\x1c\n" +
+	"\ttimestamp\x18\x01 \x01(\x03R\ttimestamp\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\x01R\x05value\">\n" +
+	"\x0eGetPageRequest\x12\x16\n" +
+	"\x06cursor\x18\x01 \x01(\x03R\x06cursor\x12\x14\n" +
+	"\x05limit\x18\x02 \x01(\x05R\x05limit\"n\n" +
+	"\x0fGetPageResponse\x12$\n" +
+	"\vnext_cursor\x18\x01 \x01(\x03H\x00R\n" +
+	"nextCursor\x88\x01\x01\x12%\n" +
+	"\x04data\x18\x02 \x03(\v2\x11.proto.SensorDataR\x04dataB\x0e\n" +
 	"\f_next_cursor2I\n" +
 	"\rSensorService\x128\n" +
 	"\aGetPage\x12\x15.proto.GetPageRequest\x1a\x16.proto.GetPageResponseB\x1fZ\x1dspectral-assignment/gen/protob\x06proto3"
@@ -211,23 +212,19 @@ func file_schema_proto_rawDescGZIP() []byte {
 
 var file_schema_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_schema_proto_goTypes = []any{
-	(*SensorReading)(nil),         // 0: proto.SensorReading
-	(*GetPageRequest)(nil),        // 1: proto.GetPageRequest
-	(*GetPageResponse)(nil),       // 2: proto.GetPageResponse
-	(*timestamppb.Timestamp)(nil), // 3: google.protobuf.Timestamp
+	(*SensorData)(nil),      // 0: proto.SensorData
+	(*GetPageRequest)(nil),  // 1: proto.GetPageRequest
+	(*GetPageResponse)(nil), // 2: proto.GetPageResponse
 }
 var file_schema_proto_depIdxs = []int32{
-	3, // 0: proto.SensorReading.timestamp:type_name -> google.protobuf.Timestamp
-	3, // 1: proto.GetPageRequest.cursor:type_name -> google.protobuf.Timestamp
-	3, // 2: proto.GetPageResponse.next_cursor:type_name -> google.protobuf.Timestamp
-	0, // 3: proto.GetPageResponse.data:type_name -> proto.SensorReading
-	1, // 4: proto.SensorService.GetPage:input_type -> proto.GetPageRequest
-	2, // 5: proto.SensorService.GetPage:output_type -> proto.GetPageResponse
-	5, // [5:6] is the sub-list for method output_type
-	4, // [4:5] is the sub-list for method input_type
-	4, // [4:4] is the sub-list for extension type_name
-	4, // [4:4] is the sub-list for extension extendee
-	0, // [0:4] is the sub-list for field type_name
+	0, // 0: proto.GetPageResponse.data:type_name -> proto.SensorData
+	1, // 1: proto.SensorService.GetPage:input_type -> proto.GetPageRequest
+	2, // 2: proto.SensorService.GetPage:output_type -> proto.GetPageResponse
+	2, // [2:3] is the sub-list for method output_type
+	1, // [1:2] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_schema_proto_init() }

@@ -4,7 +4,6 @@ import (
 	"context"
 	"spectral-assignment/pkg/server/model"
 	"spectral-assignment/pkg/server/repository"
-	"time"
 )
 
 type SensorService struct {
@@ -17,7 +16,7 @@ func NewSensorService(repo repository.SensorRepository) *SensorService {
 	}
 }
 
-func (s *SensorService) GetPage(ctx context.Context, cursor time.Time, limit int) (*model.SensorPage, error) {
+func (s *SensorService) GetPage(ctx context.Context, cursor int64, limit int32) (*model.SensorPage, error) {
 	page, err := s.repo.GetPage(ctx, cursor, limit)
 	if err != nil {
 		return nil, err
