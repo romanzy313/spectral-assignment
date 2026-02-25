@@ -56,7 +56,7 @@ export function useTimeseries({
         }) => ({
           nextCursor: res.nextCursor,
           data: res.data.map(({ t, v }) => ({
-            timestamp: new Date(t),
+            timestamp: new Date(t * 1000),
             value: v,
           })),
         }),
