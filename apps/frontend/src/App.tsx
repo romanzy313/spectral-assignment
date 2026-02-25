@@ -28,9 +28,9 @@ function App() {
           </>
         )}
       </div>
-      <div>
-        <p>Total sensor readings: {data.length}</p>
+      <div className="max-w-lg">
         {data.length > 0 ? <SensorTable data={data} /> : <p>No data</p>}
+        <p>Total sensor data points: {data.length}</p>
       </div>
     </div>
   );
