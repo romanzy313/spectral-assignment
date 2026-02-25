@@ -1,4 +1,4 @@
-package database
+package repository
 
 import (
 	"bufio"
@@ -8,16 +8,18 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"spectral-assignment/pkg/server/model"
 )
 
-func ReadCsvData(fileName string) ([]*SensorReading, error) {
+func ReadCsvData(fileName string) ([]model.SensorData, error) {
 	file, err := os.Open(fileName)
 	if err != nil {
 		return nil, fmt.Errorf("failed to open file: %w", err)
 	}
 	defer file.Close()
 
-	var result []*SensorReading
+	var result []model.SensorData
 
 	scanner := bufio.NewScanner(file)
 
@@ -43,9 +45,9 @@ func ReadCsvData(fileName string) ([]*SensorReading, error) {
 			return nil, fmt.Errorf("failed to parse value: %w", err)
 		}
 
-		result = append(result, &SensorReading{
-			Timestamp:  time,
-			MeterUsage: value,
+		result = append(result, model.SensorData{
+			Timestamp: time,
+			Value:     value,
 		})
 	}
 	err = scanner.Err()
@@ -57,17 +59,20 @@ func ReadCsvData(fileName string) ([]*SensorReading, error) {
 	return result, nil
 }
 
-type MemoryDatabase struct {
-	data []*SensorReading
+type MemoryRepo struct {
+	data []model.SensorData
 }
 
-func NewMemoryDatabase(data []*SensorReading) *MemoryDatabase {
-	return &MemoryDatabase{
+func NewSensorMemRepo(data []model.SensorData) *MemoryRepo {
+	return &MemoryRepo{
 		data: data,
 	}
 }
 
-func (d *MemoryDatabase) GetSensorReadings(ctx context.Context, req ReadingRequest) ([]*SensorReading, error) {
+func (d *MemoryRepo) GetSensorReadings(ctx context.Context, cursor time.Time, limit int) (*model.SensorPage, error) {
 	// returning all data for now
-	return d.data, nil
+	return &model.SensorPage{
+		Data:   d.data,
+		Cursor: nil,
+	}, nil
 }
