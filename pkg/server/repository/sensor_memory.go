@@ -59,17 +59,17 @@ func ReadCsvData(fileName string) ([]model.SensorData, error) {
 	return result, nil
 }
 
-type MemoryRepo struct {
+type SensorMemoryRepository struct {
 	data []model.SensorData
 }
 
-func NewSensorMemRepo(data []model.SensorData) *MemoryRepo {
-	return &MemoryRepo{
+func NewSensorMemoryRepository(data []model.SensorData) *SensorMemoryRepository {
+	return &SensorMemoryRepository{
 		data: data,
 	}
 }
 
-func (d *MemoryRepo) GetSensorReadings(ctx context.Context, cursor time.Time, limit int) (*model.SensorPage, error) {
+func (d *SensorMemoryRepository) GetSensorReadings(ctx context.Context, cursor time.Time, limit int) (*model.SensorPage, error) {
 	// returning all data for now
 	return &model.SensorPage{
 		Data:   d.data,

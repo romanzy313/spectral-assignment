@@ -8,10 +8,10 @@ import (
 )
 
 type SensorService struct {
-	repo repository.SensorRepo
+	repo repository.SensorRepository
 }
 
-func NewSensorService(repo repository.SensorRepo) *SensorService {
+func NewSensorService(repo repository.SensorRepository) *SensorService {
 	return &SensorService{
 		repo: repo,
 	}

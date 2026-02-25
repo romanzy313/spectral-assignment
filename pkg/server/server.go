@@ -46,7 +46,7 @@ func Run() {
 		log.Fatalf("failed to read csv data: %v", err)
 	}
 
-	sensorRepo := repository.NewSensorMemRepo(mockData)
+	sensorRepo := repository.NewSensorMemoryRepository(mockData)
 	sensorService := service.NewSensorService(sensorRepo)
 
 	res, err := sensorService.GetSensorReadings(context.Background(), time.Time{}, 9999)

@@ -7,6 +7,6 @@ import (
 	"spectral-assignment/pkg/server/model"
 )
 
-type SensorRepo interface {
+type SensorRepository interface {
 	GetSensorReadings(ctx context.Context, cursor time.Time, limit int) (*model.SensorPage, error)
 }
