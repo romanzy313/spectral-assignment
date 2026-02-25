@@ -1,6 +1,6 @@
 import { SensorTable } from "./component/SensorTable";
-import { useTimeseries } from "./hooks/useTimeseries";
-import { ClientApi } from "./utils/api";
+import { useTimeseries } from "./hook/useTimeseries";
+import { ClientApi } from "./util/api";
 
 const api = new ClientApi("http://localhost:12001");
 

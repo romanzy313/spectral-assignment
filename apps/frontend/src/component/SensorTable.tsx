@@ -1,4 +1,4 @@
-import type { SensorData } from "../hooks/useTimeseries";
+import type { SensorData } from "../hook/useTimeseries";
 
 type Props = {
   data: SensorData[];

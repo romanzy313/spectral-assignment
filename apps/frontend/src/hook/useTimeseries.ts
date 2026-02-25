@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { ApiCaller } from "../utils/api";
+import type { ApiCaller } from "../util/api";
 
 export type SensorData = {
   timestamp: number;
