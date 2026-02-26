@@ -7,10 +7,13 @@ import (
 )
 
 type Config struct {
-	Port uint16
+	IsDev bool
+	Port  uint16
 }
 
 func NewConfigFromEnv() Config {
+	isDev := os.Getenv("IS_DEV") == "true"
+
 	portStr := os.Getenv("PORT")
 	if portStr == "" {
 		portStr = "80"
@@ -21,6 +24,7 @@ func NewConfigFromEnv() Config {
 	}
 
 	return Config{
-		Port: uint16(port),
+		IsDev: isDev,
+		Port:  uint16(port),
 	}
 }

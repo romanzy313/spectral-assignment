@@ -20,6 +20,7 @@ run-docker:
 
 .PHONY: dev-client
 dev-client:
+	IS_DEV=true \
 	PORT=12001 \
 	SPECTRAL_FRONTEND_ORIGIN=http://localhost:12002 \
 	SPECTRAL_GRPC_SERVER_ADDRESS=localhost:12000 \
@@ -27,6 +28,7 @@ dev-client:
 
 .PHONY: dev-server
 dev-server:
+	IS_DEV=true \
 	PORT=12000 \
 	gow run cmd/server/main.go
 

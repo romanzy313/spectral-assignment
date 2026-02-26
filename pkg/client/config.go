@@ -7,12 +7,15 @@ import (
 )
 
 type Config struct {
+	IsDev             bool
 	Port              uint16
 	GrpcServerAddress string
 	FrontendOrigin    string
 }
 
 func NewConfigFromEnv() Config {
+	isDev := os.Getenv("IS_DEV") == "true"
+
 	portStr := os.Getenv("PORT")
 	if portStr == "" {
 		portStr = "80"
@@ -33,6 +36,7 @@ func NewConfigFromEnv() Config {
 	}
 
 	return Config{
+		IsDev:             isDev,
 		Port:              uint16(port),
 		GrpcServerAddress: grpcServerAddress,
 		FrontendOrigin:    frontendOrigin,

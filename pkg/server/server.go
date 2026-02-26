@@ -17,7 +17,7 @@ import (
 )
 
 func Run(ctx context.Context, config Config) {
-	log := logger.New(true)
+	log := logger.New(config.IsDev)
 
 	s := grpc.NewServer(
 		grpc.ChainUnaryInterceptor(

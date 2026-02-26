@@ -17,9 +17,9 @@ import (
 // TODO: use the same logger as server
 func Run(ctx context.Context, config Config) {
 	e := echo.New()
-	e.Logger = logger.New(true)
+	e.Logger = logger.New(config.IsDev)
 
-	// e.Use(middleware.RequestLogger())
+	e.Use(middleware.RequestLogger())
 	e.Use(middleware.CORS(config.FrontendOrigin))
 
 	e.GET("/health", func(c *echo.Context) error {
