@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useRef, useState } from "react";
 import type { SensorApiClient, SensorData } from "../modules/sensor";
 
 export function useTimeseries({
@@ -10,32 +10,33 @@ export function useTimeseries({
 }) {
   const [data, setData] = useState<SensorData[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [cursor, setCursor] = useState<number | null>(0);
   const [error, setError] = useState("");
-
   const [canLoadMore, setCanLoadMore] = useState(true);
 
-  useEffect(() => {
-    setCanLoadMore(cursor !== null);
-  }, [cursor]);
+  const cursorRef = useRef<number | null>(0);
+
+  const updateCursor = (next: number | null) => {
+    cursorRef.current = next;
+    setCanLoadMore(next !== null);
+  };
 
   const clearError = () => {
     setError("");
   };
 
   const loadMore = async () => {
-    if (cursor === null) {
+    if (cursorRef.current === null) {
       return;
     }
 
     try {
       setIsLoading(true);
       const page = await sensorApiClient.getPage({
-        cursor,
+        cursor: cursorRef.current,
         limit,
       });
       setData((data) => [...data, ...page.data]);
-      setCursor(page.nextCursor);
+      updateCursor(page.nextCursor);
       setError("");
     } catch (error) {
       console.error("Error getting timeseries data:", error);
@@ -46,8 +47,15 @@ export function useTimeseries({
     }
   };
 
+  const loadAll = async () => {
+    while (cursorRef.current !== null) {
+      await loadMore();
+    }
+  };
+
   return {
     data,
+    loadAll,
     loadMore,
     canLoadMore,
     isLoading,

@@ -5,7 +5,7 @@ import { sensorApiClient } from "./modules/_runtime";
 import "./global.css";
 
 function App() {
-  const { data, loadMore, canLoadMore, isLoading, clearError, error } =
+  const { data, loadAll, loadMore, canLoadMore, isLoading, clearError, error } =
     useTimeseries({
       sensorApiClient,
       limit: 1000,
@@ -14,9 +14,12 @@ function App() {
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-2xl font-bold mb-2">Spectral assignment</h1>
-      <div className="mb-4">
+      <div className="mb-4 flex gap-2">
         <Button disabled={!canLoadMore || isLoading} onClick={loadMore}>
           {canLoadMore ? "Load more" : "No more data"}
+        </Button>
+        <Button disabled={!canLoadMore || isLoading} onClick={loadAll}>
+          {canLoadMore ? "Load All" : "No more data"}
         </Button>
       </div>
       <div>
