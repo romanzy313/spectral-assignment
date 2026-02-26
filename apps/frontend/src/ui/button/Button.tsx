@@ -1,5 +1,5 @@
 import type { ComponentProps } from "react";
-import { cn } from "../util/cn";
+import { cn } from "../../util/cn";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface Props extends ComponentProps<"button"> {

@@ -1,51 +1,14 @@
-import { SensorTable } from "./component/SensorTable";
-import { useTimeseries } from "./hook/useTimeseries";
-import { Button } from "./ui/Button";
-import { sensorApiClient } from "./modules/_runtime";
 import "./global.css";
 
-function App() {
-  const { data, loadAll, loadMore, canLoadMore, isLoading, clearError, error } =
-    useTimeseries({
-      sensorApiClient,
-      limit: 1000,
-    });
+import IndexPage from "./page/Index";
 
+function App() {
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-2">Spectral assignment</h1>
-      <div className="mb-4 flex gap-2">
-        <Button
-          disabled={!canLoadMore || isLoading}
-          onClick={loadMore}
-          data-testid="load-more-button"
-        >
-          {canLoadMore ? "Load more" : "No more data"}
-        </Button>
-        <Button
-          disabled={!canLoadMore || isLoading}
-          onClick={loadAll}
-          data-testid="load-all-button"
-        >
-          {canLoadMore ? "Load All" : "No more data"}
-        </Button>
-      </div>
-      <div>
-        {error && (
-          <>
-            <p data-testid="error-message">{error}</p>
-            <button onClick={clearError}>x</button>
-          </>
-        )}
-      </div>
-      <p className="text-gray-600 mb-1">
-        Total sensor data points:{" "}
-        <span data-testid="total-data-points">{data.length}</span>
-      </p>
+    <main className="container mx-auto px-4 py-8">
       <div className="max-w-lg">
-        {data.length > 0 ? <SensorTable data={data} /> : <p></p>}
+        <IndexPage />
       </div>
-    </div>
+    </main>
   );
 }
 
