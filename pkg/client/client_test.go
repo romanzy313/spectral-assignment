@@ -13,6 +13,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func ptr[T any](v T) *T { return &v }
+
 type mockTestClient struct {
 	sensor.GrpcClient
 }
@@ -22,7 +24,9 @@ func (m *mockTestClient) Close() error {
 }
 
 func (m *mockTestClient) GetPage(ctx context.Context, req *protov1.GetPageRequest) (*protov1.GetPageResponse, error) {
-	return &protov1.GetPageResponse{}, nil
+	return &protov1.GetPageResponse{NextCursor: ptr(int64(42)), Data: []*protov1.SensorData{
+		{Timestamp: 10, Value: 1},
+	}}, nil
 }
 
 func TestClient(t *testing.T) {
@@ -38,7 +42,7 @@ func TestClient(t *testing.T) {
 			url:            "/api/v1/sensor/data?cursor=0&limit=2",
 			method:         http.MethodGet,
 			expectedStatus: http.StatusOK,
-			expectedBody:   `{"data":[],"nextCursor":null}`,
+			expectedBody:   `{"data":[{"t":10,"v":1}],"nextCursor":42}`,
 		},
 		{
 			name:           "bad limit",

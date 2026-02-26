@@ -33,11 +33,11 @@ dev-frontend:
 
 .PHONY: go-test
 go-test:
-	go test -v ./...
+	go test -cover ./...
 
 .PHONY: dev-go-test
 dev-go-test:
-	gow -c test ./...
+	gow -c test -cover ./...
 
 .PHONY: ts-test
 ts-test:

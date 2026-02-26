@@ -4,20 +4,25 @@ import (
 	"context"
 
 	protov1 "github.com/romanzy313/spectral-assignment/gen/proto/v1"
-	"github.com/romanzy313/spectral-assignment/pkg/server/service"
+	"github.com/romanzy313/spectral-assignment/pkg/server/model"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
+type SensorService interface {
+	GetPage(ctx context.Context, cursor int64, limit int32) (*model.SensorPage, error)
+	GetCount(ctx context.Context) (*model.SensorCount, error)
+}
+
 type SensorRouterV1 struct {
 	protov1.UnimplementedSensorServiceServer
 
-	sensorService *service.SensorService
+	sensorService SensorService
 }
 
-func NewSensorRouter(sensorService *service.SensorService) *SensorRouterV1 {
+func NewSensorRouter(sensorService SensorService) *SensorRouterV1 {
 	return &SensorRouterV1{
 		sensorService: sensorService,
 	}
