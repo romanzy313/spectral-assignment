@@ -1,11 +1,11 @@
 import { useRef, useState } from "react";
-import type { SensorApiClient, SensorData } from "../modules/sensor";
+import type { ISensorApiClient, SensorData } from "../modules/sensor";
 
 export function useTimeseries({
   sensorApiClient,
   limit,
 }: {
-  sensorApiClient: SensorApiClient;
+  sensorApiClient: ISensorApiClient;
   limit: number;
 }) {
   const [data, setData] = useState<SensorData[]>([]);

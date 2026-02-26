@@ -39,7 +39,13 @@ go-test:
 dev-go-test:
 	gow -c test ./...
 
+.PHONY: ts-test
+ts-test:
+	pnpm --filter frontend test
 
+.PHONY: dev-ts-test
+dev-ts-test:
+	pnpm --filter frontend test:watch
 
 .PHONY: test
-test: go-test
+test: go-test ts-test
