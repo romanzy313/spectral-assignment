@@ -2,6 +2,7 @@
 install-tools:
 	go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.36.11
 	go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.6.1
+	go install github.com/mitranim/gow@latest
 
 .PHONY: proto
 proto:
@@ -13,27 +14,22 @@ proto:
 		--go-grpc_out=gen --go-grpc_opt=paths=source_relative \
 		proto/v1/schema.proto
 
-.PHONY: run-client
-run-client:
+.PHONY: dev-client
+dev-client:
 	PORT=12001 \
 	SPECTRAL_FRONTEND_ORIGIN=http://localhost:12002 \
 	SPECTRAL_GRPC_SERVER_ADDRESS=localhost:12000 \
-	go run cmd/client/main.go
+	gow -c run cmd/client/main.go
 
-
-.PHONY: run-server
-run-server:
+.PHONY: dev-server
+dev-server:
 	PORT=12000 \
-	go run cmd/server/main.go
+	gow run cmd/server/main.go
 
-.PHONY: build-server
-build-server:
-	CGO_ENABLED=0 GOOS=linux go build -o ./bin/server ./cmd/server/main.go
-
-.PHONY: run-frontend
+.PHONY: dev-frontend
 dev-frontend:
 	PUBLIC_SPECTRAL_GRPC_CLIENT_ORIGIN=http://localhost:12001 \
-    pnpm --filter frontend dev
+    pnpm --filter frontend dev --port 12002
 
 .PHONY: go-test
 go-test:
