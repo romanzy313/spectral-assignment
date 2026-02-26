@@ -58,6 +58,6 @@ test: go-test ts-test
 test-e2e:
 	pnpm exec playwright test
 
-.PHONY: dev-test-e2e
-dev-test-e2e:
+.PHONY: test-e2e-ui
+test-e2e-ui:
 	pnpm exec playwright test --ui

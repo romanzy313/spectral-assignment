@@ -12,7 +12,7 @@ import (
 func main() {
 	config := server.NewConfigFromEnv()
 
-	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM) // start shutdown process on signal
+	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer cancel()
 
 	server.Run(ctx, config)
