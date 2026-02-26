@@ -67,7 +67,7 @@ message GetPageResponse {
 
 Cursor pagination is a perfect choice when time-series data is involved, because previous meter readings remain unchanged and new records are always added at the next unique timestamp. The data is retrieved in chunks of up-to 10000 datapoints, trading round-trip chattiness for smaller memory consumption on the backend services. This is a simple, robust, and well-known method of sending large amounts of data. The complexity of reconstructing the full data set is shifted to the API consumer.
 
-As for the representation of sensor data, I went with the following schema:
+As for the representation of sensor data between backend microservices, I went with the following schema:
 
 ```proto
 message SensorData {
@@ -76,9 +76,17 @@ message SensorData {
 }
 ```
 
-I’ve decided to use Unix timestamps to minimize data transfer and reduce conversion overhead compared to a "native" protobuf datatype, `google.protobuf.Timestamp`. For sensor reading, I went with using a floating-point data type instead of the strings. Since this data is used purely for visualization, a number is better for performance and simplicity.
+I’ve decided to use Unix timestamps to minimize data transfer and reduce conversion overhead compared to a "native" protobuf datatype, `google.protobuf.Timestamp`. For sensor reading, I went with using a floating-point data type instead of strings. Since this data is used purely for visualization, a float is better for performance and simplicity.
 
-However, if the data from the `server` is used in financial calculations, it should be represented as a `string` rather than a `double`. Then it will be the consumer's task to perform appropriate decimal conversions and calculations.
+However, if the data from the `server` is used in financial calculations, it should be represented as a `string` rather than a `double`. Then it will be the consumer's task to perform appropriate decimal or float conversions.
+
+Lastly, the JSON sensor reading looks like so:
+
+```json
+{ "t": 1630456800, "v": 55.09 }
+```
+
+I have shortened the key names to save on data transmission. Using an even shorter array syntax, such as `[1630456800, 55.09]`, was considered but ultimately not adopted. From my experience, charting libraries require an object structure for them to work. This way, it's readable. Also, multiple sensor values can be added to this object. Either way is fine; I don't have time to refactor to arrays anyway.
 
 ### Project Structure and Architecture
 
@@ -100,7 +108,7 @@ Here is the list of key technologies used for this assignment, as well as a shor
 
 ### Testing
 
-Unit test coverage is currently below 80%. To compensate, I have implementedend-to-end testing (`frontend` → `client` → `server` → `mock db`). Integration testing TODO (`http request` → `client` → `server` → `mock db`).
+Unit test coverage is currently below 80%. To compensate, I have implementedend-to-end testing (`frontend` → `client` → `server` → `mock db`). Integration testing can also be done (`http request` → `client` → `server` → `mock db`). TODO
 
 ### Other
 
