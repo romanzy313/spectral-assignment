@@ -1,26 +1,11 @@
 import { useEffect, useState } from "react";
-import type { ApiCaller } from "../util/api";
-
-export type SensorData = {
-  timestamp: Date;
-  value: number;
-};
-
-type SensorPageRequest = {
-  cursor: number | null;
-  limit: number;
-};
-
-type SensorPage = {
-  nextCursor: number | null;
-  data: SensorData[];
-};
+import type { SensorApiClient, SensorData } from "../modules/sensor";
 
 export function useTimeseries({
-  api,
+  sensorApiClient,
   limit,
 }: {
-  api: ApiCaller;
+  sensorApiClient: SensorApiClient;
   limit: number;
 }) {
   const [data, setData] = useState<SensorData[]>([]);
@@ -43,24 +28,10 @@ export function useTimeseries({
     }
 
     try {
-      const page = await api.apiCall<SensorPageRequest, SensorPage>(
-        "GET",
-        "/api/v1/sensor/data",
-        {
-          cursor: cursor,
-          limit,
-        },
-        (res: {
-          nextCursor: number | null;
-          data: { t: number; v: number }[];
-        }) => ({
-          nextCursor: res.nextCursor,
-          data: res.data.map(({ t, v }) => ({
-            timestamp: new Date(t * 1000),
-            value: v,
-          })),
-        }),
-      );
+      const page = await sensorApiClient.getPage({
+        cursor,
+        limit,
+      });
       setData((data) => [...data, ...page.data]);
       setCursor(page.nextCursor);
       setError("");

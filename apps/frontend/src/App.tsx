@@ -1,14 +1,12 @@
 import { SensorTable } from "./component/SensorTable";
 import { useTimeseries } from "./hook/useTimeseries";
-import { ClientApi } from "./util/api";
 import "./global.css";
 import { Button } from "./ui/Button";
-
-const api = new ClientApi(import.meta.env.PUBLIC_SPECTRAL_GRPC_CLIENT_ORIGIN);
+import { sensorApiClient } from "./modules/_runtime";
 
 function App() {
   const { data, loadMore, canLoadMore, clearError, error } = useTimeseries({
-    api,
+    sensorApiClient,
     limit: 1000,
   });
 
