@@ -8,5 +8,4 @@ import (
 
 type SensorRepository interface {
 	GetPage(ctx context.Context, cursor int64, limit int32) (*model.SensorPage, error)
-	GetCount(ctx context.Context) (*model.SensorCount, error)
 }

@@ -103,9 +103,3 @@ func (d *SensorMemoryRepository) GetPage(ctx context.Context, cursor int64, limi
 		Cursor: nextCursor,
 	}, nil
 }
-
-func (d *SensorMemoryRepository) GetCount(ctx context.Context) (*model.SensorCount, error) {
-	return &model.SensorCount{
-		Count: uint64(len(d.data)),
-	}, nil
-}

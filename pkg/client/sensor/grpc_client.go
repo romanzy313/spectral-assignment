@@ -13,7 +13,6 @@ type GrpcClient interface {
 	Close() error
 
 	GetPage(ctx context.Context, req *protov1.GetPageRequest) (*protov1.GetPageResponse, error)
-	GetCount(ctx context.Context) (*protov1.GetCountResponse, error)
 }
 
 type GrpcClientImpl struct {
@@ -43,8 +42,4 @@ func (c *GrpcClientImpl) Close() error {
 
 func (c *GrpcClientImpl) GetPage(ctx context.Context, req *protov1.GetPageRequest) (*protov1.GetPageResponse, error) {
 	return c.client.GetPage(ctx, req)
-}
-
-func (c *GrpcClientImpl) GetCount(ctx context.Context) (*protov1.GetCountResponse, error) {
-	return c.client.GetCount(ctx, &protov1.GetCountRequest{})
 }

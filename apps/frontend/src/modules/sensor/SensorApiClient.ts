@@ -1,5 +1,5 @@
 import type { ApiCaller } from "../../util/api";
-import type { SensorCount, SensorPage, SensorPageRequest } from "./types";
+import type { SensorPage, SensorPageRequest } from "./types";
 
 export class SensorApiClient {
   private apiCaller: ApiCaller;
@@ -24,9 +24,5 @@ export class SensorApiClient {
         })),
       }),
     );
-  }
-
-  getCount(): Promise<SensorCount> {
-    return this.apiCaller.rpc("GET", "/api/v1/sensor/count", {});
   }
 }

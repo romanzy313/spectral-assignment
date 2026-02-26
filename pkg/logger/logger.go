@@ -11,6 +11,6 @@ func New(dev bool) *slog.Logger {
 
 	}
 
-	// Could turn into structured logging in prod
+	// structured logging in prod
 	return slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelInfo}))
 }

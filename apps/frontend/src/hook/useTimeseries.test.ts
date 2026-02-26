@@ -8,15 +8,12 @@ import { SensorApiClient } from "../modules/sensor";
 
 describe("useTimeseries", () => {
   let getPage: Mock<SensorApiClient["getPage"]>;
-  let getCount: Mock<SensorApiClient["getCount"]>;
   let client: SensorApiClient;
 
   beforeEach(() => {
     getPage = vi.fn();
-    getCount = vi.fn();
     client = {
       getPage,
-      getCount,
     } as any;
   });
 

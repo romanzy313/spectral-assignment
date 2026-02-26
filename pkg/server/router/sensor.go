@@ -13,7 +13,6 @@ import (
 
 type SensorService interface {
 	GetPage(ctx context.Context, cursor int64, limit int32) (*model.SensorPage, error)
-	GetCount(ctx context.Context) (*model.SensorCount, error)
 }
 
 type SensorRouterV1 struct {
@@ -54,20 +53,6 @@ func (s *SensorRouterV1) GetPage(ctx context.Context, req *protov1.GetPageReques
 			Timestamp: v.Timestamp,
 			Value:     v.Value,
 		})
-	}
-
-	return resp, nil
-}
-
-func (s *SensorRouterV1) GetCount(ctx context.Context, _ *protov1.GetCountRequest) (*protov1.GetCountResponse, error) {
-	data, err := s.sensorService.GetCount(ctx)
-
-	if err != nil {
-		return nil, status.Error(codes.Internal, err.Error())
-	}
-
-	resp := &protov1.GetCountResponse{
-		Count: data.Count,
 	}
 
 	return resp, nil

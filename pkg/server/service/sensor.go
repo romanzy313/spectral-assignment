@@ -28,14 +28,3 @@ func (s *SensorService) GetPage(ctx context.Context, cursor int64, limit int32) 
 
 	return page, nil
 }
-
-func (s *SensorService) GetCount(ctx context.Context) (*model.SensorCount, error) {
-	count, err := s.repo.GetCount(ctx)
-
-	if err != nil {
-		logger.FromContext(ctx).Error("failed to get count data", "error", err)
-		return nil, fmt.Errorf("failed to get count data: %w", err)
-	}
-
-	return count, nil
-}

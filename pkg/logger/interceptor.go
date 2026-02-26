@@ -9,7 +9,6 @@ import (
 
 func GrpcServerInterceptor(log *slog.Logger) grpc.UnaryServerInterceptor {
 	return func(ctx context.Context, req any, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (any, error) {
-		// add observability
 		log := log.With(
 			"method", info.FullMethod,
 		)

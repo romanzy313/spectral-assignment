@@ -12,7 +12,3 @@ export type SensorPage = {
   nextCursor: number | null;
   data: SensorData[];
 };
-
-export type SensorCount = {
-  count: number;
-};
