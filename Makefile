@@ -20,10 +20,15 @@ run-client:
 	SPECTRAL_GRPC_SERVER_ADDRESS=localhost:12000 \
 	go run cmd/client/main.go
 
+
 .PHONY: run-server
 run-server:
 	PORT=12000 \
 	go run cmd/server/main.go
+
+.PHONY: build-server
+build-server:
+	CGO_ENABLED=0 GOOS=linux go build -o ./bin/server ./cmd/server/main.go
 
 .PHONY: run-frontend
 dev-frontend:

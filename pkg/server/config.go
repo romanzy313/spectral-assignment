@@ -13,7 +13,7 @@ type Config struct {
 func NewConfigFromEnv() Config {
 	portStr := os.Getenv("PORT")
 	if portStr == "" {
-		portStr = "3000"
+		portStr = "80"
 	}
 	port, err := strconv.Atoi(portStr)
 	if err != nil {

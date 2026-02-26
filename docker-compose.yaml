@@ -1,0 +1,29 @@
+services:
+  spectral-assignment-frontend:
+    build:
+      context: .
+      dockerfile: ./infra/docker/frontend/Dockerfile
+      args:
+        PUBLIC_SPECTRAL_GRPC_CLIENT_ORIGIN: http://localhost:3002
+    ports:
+      - "3000:80"
+    depends_on:
+      - spectral-assignment-server
+      - spectral-assignment-client
+    environment:
+      - NODE_ENV=production
+  spectral-assignment-server:
+    build:
+      context: .
+      dockerfile: ./infra/docker/server/Dockerfile
+  spectral-assignment-client:
+    build:
+      context: .
+      dockerfile: ./infra/docker/client/Dockerfile
+    ports:
+      - "3002:80" # expose to be reacheable in dev
+    depends_on:
+      - spectral-assignment-server
+    environment:
+      - SPECTRAL_GRPC_SERVER_ADDRESS=spectral-assignment-server:80
+      - SPECTRAL_FRONTEND_ORIGIN=http://localhost:3000

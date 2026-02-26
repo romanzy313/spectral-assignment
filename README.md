@@ -17,3 +17,10 @@
 # Dev notes:
 
 - in dev backend is served on `12000`, frontend at `12001`, webapp at `12002`
+
+
+# Run Application
+
+## Docker Compose
+
+Run `docker compose up --build`. The frontend is available at [http://localhost:3000](http://localhost:3000).
