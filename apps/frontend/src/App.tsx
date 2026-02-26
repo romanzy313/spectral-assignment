@@ -1,21 +1,22 @@
 import { SensorTable } from "./component/SensorTable";
 import { useTimeseries } from "./hook/useTimeseries";
-import "./global.css";
 import { Button } from "./ui/Button";
 import { sensorApiClient } from "./modules/_runtime";
+import "./global.css";
 
 function App() {
-  const { data, loadMore, canLoadMore, clearError, error } = useTimeseries({
-    sensorApiClient,
-    limit: 1000,
-  });
+  const { data, loadMore, canLoadMore, isLoading, clearError, error } =
+    useTimeseries({
+      sensorApiClient,
+      limit: 1000,
+    });
 
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-2xl font-bold mb-2">Spectral assignment</h1>
       <div className="mb-4">
-        <Button disabled={!canLoadMore} onClick={loadMore}>
-          Load more
+        <Button disabled={!canLoadMore || isLoading} onClick={loadMore}>
+          {canLoadMore ? "Load more" : "No more data"}
         </Button>
       </div>
       <div>

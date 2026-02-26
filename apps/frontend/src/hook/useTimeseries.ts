@@ -9,6 +9,7 @@ export function useTimeseries({
   limit: number;
 }) {
   const [data, setData] = useState<SensorData[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [cursor, setCursor] = useState<number | null>(0);
   const [error, setError] = useState("");
 
@@ -28,6 +29,7 @@ export function useTimeseries({
     }
 
     try {
+      setIsLoading(true);
       const page = await sensorApiClient.getPage({
         cursor,
         limit,
@@ -39,6 +41,8 @@ export function useTimeseries({
       console.error("Error getting timeseries data:", error);
 
       setError(error instanceof Error ? error.message : `${error}`);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -46,6 +50,7 @@ export function useTimeseries({
     data,
     loadMore,
     canLoadMore,
+    isLoading,
     error,
     clearError,
   };
