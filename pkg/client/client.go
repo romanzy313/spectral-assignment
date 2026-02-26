@@ -1,9 +1,11 @@
 package client
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/romanzy313/spectral-assignment/pkg/client/sensor"
 	"github.com/romanzy313/spectral-assignment/pkg/logger"
@@ -13,7 +15,7 @@ import (
 )
 
 // TODO: use the same logger as server
-func Run(config Config) {
+func Run(ctx context.Context, config Config) {
 	e := echo.New()
 	e.Logger = logger.New(true)
 
@@ -35,8 +37,13 @@ func Run(config Config) {
 	sensorRouter := sensor.NewRouter(sensorClient)
 	sensorRouter.Register(e)
 
-	addr := fmt.Sprintf("0.0.0.0:%d", config.Port)
-	if err := e.Start(addr); err != nil {
+	sc := echo.StartConfig{
+		Address:         fmt.Sprintf("0.0.0.0:%d", config.Port),
+		HideBanner:      true,
+		GracefulTimeout: 10 * time.Second, // same as default
+	}
+
+	if err := sc.Start(ctx, e); err != nil {
 		e.Logger.Error("failed to start server", "error", err)
 	}
 
