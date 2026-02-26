@@ -23,6 +23,8 @@ test("workflow", async ({ page }) => {
 
   await expect(page.getByTestId("load-more-button")).toBeDisabled();
   await expect(page.getByTestId("load-all-button")).toBeDisabled();
+
+  await expect(page.getByTestId("total-data-points")).toHaveText("2974");
 });
 
 // test("get started link", async ({ page }) => {
