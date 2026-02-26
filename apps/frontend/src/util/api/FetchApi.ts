@@ -50,12 +50,20 @@ export class FetchApi implements ApiCaller {
     try {
       const response = await this.fetch(url, options);
       const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error("message" in data ? data.message : "unknown error");
+      }
+
       if (responseConverter) {
         return responseConverter(data);
       }
       return data;
     } catch (cause) {
-      throw new ApiError("Failed to fetch", cause);
+      throw new ApiError(
+        cause instanceof Error ? cause.message : `${cause}`,
+        cause,
+      );
     }
   }
 }

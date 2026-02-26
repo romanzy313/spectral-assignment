@@ -36,4 +36,5 @@ func Run(config Config) {
 	if err := e.Start(addr); err != nil {
 		e.Logger.Error("failed to start server", "error", err)
 	}
+
 }

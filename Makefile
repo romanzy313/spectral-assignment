@@ -34,3 +34,12 @@ dev-frontend:
 .PHONY: go-test
 go-test:
 	go test -v ./...
+
+.PHONY: dev-go-test
+dev-go-test:
+	gow -c test ./...
+
+
+
+.PHONY: test
+test: go-test

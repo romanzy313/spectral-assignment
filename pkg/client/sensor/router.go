@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v5"
+	"github.com/romanzy313/spectral-assignment/pkg/common"
 )
 
 type Router struct {
@@ -17,40 +18,50 @@ func NewRouter(grpc GrpcClient) *Router {
 }
 
 func (r *Router) Register(e *echo.Echo) {
+	e.GET("/api/v1/sensor/data", r.getSensorData)
+	e.GET("/api/v1/sensor/count", r.getSensorCount)
+}
 
-	e.GET("/api/v1/sensor/data", func(c *echo.Context) error {
-		ctx := c.Request().Context()
+func (r *Router) getSensorData(c *echo.Context) error {
+	ctx := c.Request().Context()
 
-		var bindReq GetPageRequestDTO
+	var bindReq GetPageRequestDTO
 
-		err := c.Bind(&bindReq)
-		if err != nil {
-			return c.String(http.StatusBadRequest, "bad request")
-		}
-		if bindReq.Limit < 1 || bindReq.Limit > 10000 {
-			return c.String(http.StatusBadRequest, "limit must be between 1 and 10000")
-		}
+	err := c.Bind(&bindReq)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, common.ApiError{
+			Message: "bad request",
+		})
+	}
+	if bindReq.Limit < 1 || bindReq.Limit > 10000 {
+		return c.JSON(http.StatusBadRequest, common.ApiError{
+			Message: "limit must be between 1 and 10000",
+		})
+	}
 
-		req := ToProtoGetPageRequest(bindReq)
+	req := ToProtoGetPageRequest(bindReq)
 
-		resp, err := r.grpc.GetPage(ctx, req)
-		if err != nil {
-			c.Logger().Error("failed to get page from server", "error", err)
-			return c.String(http.StatusInternalServerError, "internal server error")
-		}
+	resp, err := r.grpc.GetPage(ctx, req)
+	if err != nil {
+		c.Logger().Error("failed to get page from server", "error", err)
+		return c.JSON(http.StatusInternalServerError, common.ApiError{
+			Message: "internal server error",
+		})
+	}
 
-		return c.JSON(200, FromProtoGetPageResponse(resp))
-	})
+	return c.JSON(200, FromProtoGetPageResponse(resp))
+}
 
-	e.GET("/api/v1/sensor/count", func(c *echo.Context) error {
-		ctx := c.Request().Context()
+func (r *Router) getSensorCount(c *echo.Context) error {
+	ctx := c.Request().Context()
 
-		resp, err := r.grpc.GetCount(ctx)
-		if err != nil {
-			c.Logger().Error("failed to get page from server", "error", err)
-			return c.String(http.StatusInternalServerError, "internal server error")
-		}
+	resp, err := r.grpc.GetCount(ctx)
+	if err != nil {
+		c.Logger().Error("failed to get page from server", "error", err)
+		return c.JSON(http.StatusInternalServerError, common.ApiError{
+			Message: "internal server error",
+		})
+	}
 
-		return c.JSON(200, FromProtoGetCountResponse(resp))
-	})
+	return c.JSON(200, FromProtoGetCountResponse(resp))
 }
