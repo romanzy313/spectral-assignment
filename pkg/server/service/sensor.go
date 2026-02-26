@@ -2,7 +2,9 @@ package service
 
 import (
 	"context"
+	"fmt"
 
+	"github.com/romanzy313/spectral-assignment/pkg/logger"
 	"github.com/romanzy313/spectral-assignment/pkg/server/model"
 	"github.com/romanzy313/spectral-assignment/pkg/server/repository"
 )
@@ -20,15 +22,20 @@ func NewSensorService(repo repository.SensorRepository) *SensorService {
 func (s *SensorService) GetPage(ctx context.Context, cursor int64, limit int32) (*model.SensorPage, error) {
 	page, err := s.repo.GetPage(ctx, cursor, limit)
 	if err != nil {
-		return nil, err
+		logger.FromContext(ctx).Error("failed to get page data", "error", err)
+		return nil, fmt.Errorf("failed to get page data: %w", err)
 	}
+
 	return page, nil
 }
 
 func (s *SensorService) GetCount(ctx context.Context) (*model.SensorCount, error) {
 	count, err := s.repo.GetCount(ctx)
+
 	if err != nil {
-		return nil, err
+		logger.FromContext(ctx).Error("failed to get count data", "error", err)
+		return nil, fmt.Errorf("failed to get count data: %w", err)
 	}
+
 	return count, nil
 }

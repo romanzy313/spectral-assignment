@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/romanzy313/spectral-assignment/pkg/client/sensor"
+	"github.com/romanzy313/spectral-assignment/pkg/logger"
 
 	"github.com/labstack/echo/v5"
 	"github.com/labstack/echo/v5/middleware"
@@ -14,6 +15,8 @@ import (
 // TODO: use the same logger as server
 func Run(config Config) {
 	e := echo.New()
+	e.Logger = logger.New(true)
+
 	// e.Use(middleware.RequestLogger())
 	e.Use(middleware.CORS(config.FrontendOrigin))
 

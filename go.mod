@@ -3,6 +3,7 @@ module github.com/romanzy313/spectral-assignment
 go 1.25.6
 
 require (
+	github.com/grpc-ecosystem/go-grpc-middleware v1.4.0
 	github.com/labstack/echo/v5 v5.0.4
 	github.com/stretchr/testify v1.11.1
 	google.golang.org/grpc v1.79.1

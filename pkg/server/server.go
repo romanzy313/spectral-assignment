@@ -7,16 +7,27 @@ import (
 
 	"google.golang.org/grpc"
 
+	"github.com/romanzy313/spectral-assignment/pkg/logger"
 	"github.com/romanzy313/spectral-assignment/pkg/server/repository"
 	"github.com/romanzy313/spectral-assignment/pkg/server/router"
 	"github.com/romanzy313/spectral-assignment/pkg/server/service"
+
+	grpc_recovery "github.com/grpc-ecosystem/go-grpc-middleware/recovery"
 )
 
 // basic implementation from
 // https://grpc.io/docs/languages/go/basics/
 func Run(config Config) {
 
-	s := grpc.NewServer()
+	l := logger.New(true)
+
+	s := grpc.NewServer(
+		grpc.ChainUnaryInterceptor(
+			// TODO: add more observability
+			logger.GrpcServerInterceptor(l),
+			grpc_recovery.UnaryServerInterceptor(),
+		),
+	)
 
 	// dependencies are initialized here
 	mockData, err := repository.ReadCsvData("./meterusage.csv")

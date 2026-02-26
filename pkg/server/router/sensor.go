@@ -2,7 +2,6 @@ package router
 
 import (
 	"context"
-	"log"
 
 	protov1 "github.com/romanzy313/spectral-assignment/gen/proto/v1"
 	"github.com/romanzy313/spectral-assignment/pkg/server/service"
@@ -25,6 +24,7 @@ func NewSensorRouter(sensorService *service.SensorService) *SensorRouterV1 {
 }
 
 func (s *SensorRouterV1) Register(gs *grpc.Server) {
+
 	protov1.RegisterSensorServiceServer(gs, s)
 }
 
@@ -32,8 +32,7 @@ func (s *SensorRouterV1) GetPage(ctx context.Context, req *protov1.GetPageReques
 	data, err := s.sensorService.GetPage(ctx, req.Cursor, req.Limit)
 
 	if err != nil {
-		log.Printf("failed to get page data: %s", err.Error())
-		return nil, status.Errorf(codes.Internal, "failed to get page data: %s", err.Error())
+		return nil, status.Error(codes.Internal, err.Error())
 	}
 
 	resp := &protov1.GetPageResponse{
@@ -59,8 +58,7 @@ func (s *SensorRouterV1) GetCount(ctx context.Context, _ *protov1.GetCountReques
 	data, err := s.sensorService.GetCount(ctx)
 
 	if err != nil {
-		log.Printf("failed to get count data: %s", err.Error())
-		return nil, status.Errorf(codes.Internal, "failed to get count data: %s", err.Error())
+		return nil, status.Error(codes.Internal, err.Error())
 	}
 
 	resp := &protov1.GetCountResponse{
