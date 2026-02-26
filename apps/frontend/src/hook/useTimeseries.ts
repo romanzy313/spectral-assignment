@@ -1,11 +1,11 @@
 import { useRef, useState } from "react";
-import type { ISensorApiClient, SensorData } from "../modules/sensor";
+import type { SensorApiClient, SensorData } from "../modules/sensor";
 
 export function useTimeseries({
   sensorApiClient,
   limit,
 }: {
-  sensorApiClient: ISensorApiClient;
+  sensorApiClient: SensorApiClient;
   limit: number;
 }) {
   const [data, setData] = useState<SensorData[]>([]);
@@ -24,9 +24,9 @@ export function useTimeseries({
     setError("");
   };
 
-  const loadMore = async () => {
+  const loadMore = async (): Promise<boolean> => {
     if (cursorRef.current === null) {
-      return;
+      return false;
     }
 
     try {
@@ -38,10 +38,13 @@ export function useTimeseries({
       setData((data) => [...data, ...page.data]);
       updateCursor(page.nextCursor);
       setError("");
+
+      return true;
     } catch (error) {
       console.error("Error getting timeseries data:", error);
 
       setError(error instanceof Error ? error.message : `${error}`);
+      return false;
     } finally {
       setIsLoading(false);
     }
@@ -49,7 +52,10 @@ export function useTimeseries({
 
   const loadAll = async () => {
     while (cursorRef.current !== null) {
-      await loadMore();
+      const ok = await loadMore();
+      if (!ok) {
+        return;
+      }
     }
   };
 

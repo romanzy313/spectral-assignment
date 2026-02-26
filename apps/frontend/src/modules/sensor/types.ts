@@ -16,8 +16,3 @@ export type SensorPage = {
 export type SensorCount = {
   count: number;
 };
-
-export interface ISensorApiClient {
-  getPage(req: SensorPageRequest): Promise<SensorPage>;
-  getCount(): Promise<SensorCount>;
-}

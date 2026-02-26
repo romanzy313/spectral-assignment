@@ -1,12 +1,7 @@
 import type { ApiCaller } from "../../util/api";
-import type {
-  ISensorApiClient,
-  SensorCount,
-  SensorPage,
-  SensorPageRequest,
-} from "./types";
+import type { SensorCount, SensorPage, SensorPageRequest } from "./types";
 
-export class SensorApiClient implements ISensorApiClient {
+export class SensorApiClient {
   private apiCaller: ApiCaller;
 
   constructor(apiCaller: ApiCaller) {
