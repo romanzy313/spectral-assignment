@@ -14,6 +14,10 @@ proto:
 		--go-grpc_out=gen --go-grpc_opt=paths=source_relative \
 		proto/v1/schema.proto
 
+.PHONY: run-docker
+run-docker:
+	docker compose up --build
+
 .PHONY: dev-client
 dev-client:
 	PORT=12001 \
@@ -31,21 +35,29 @@ dev-frontend:
 	PUBLIC_SPECTRAL_GRPC_CLIENT_ORIGIN=http://localhost:12001 \
     pnpm --filter frontend dev --port 12002
 
-.PHONY: go-test
-go-test:
+.PHONY: test-go
+test-go:
 	go test -cover ./...
 
-.PHONY: dev-go-test
-dev-go-test:
+.PHONY: dev-test-go
+dev-test-go:
 	gow -c test -cover ./...
 
-.PHONY: ts-test
-ts-test:
+.PHONY: test-js
+test-js:
 	pnpm --filter frontend test
 
-.PHONY: dev-ts-test
-dev-ts-test:
+.PHONY: dev-test-js
+dev-test-js:
 	pnpm --filter frontend test:watch
 
 .PHONY: test
 test: go-test ts-test
+
+.PHONY: test-e2e
+test-e2e:
+	pnpm exec playwright test
+
+.PHONY: dev-test-e2e
+dev-test-e2e:
+	pnpm exec playwright test --ui

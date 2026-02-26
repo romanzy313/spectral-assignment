@@ -6,7 +6,7 @@ type Props = {
 
 export function SensorTable({ data }: Props) {
   return (
-    <div className="rounded-lg border border-gray-200 shadow-sm max-h-160 overflow-y-auto">
+    <div className="rounded-lg border border-gray-200 max-h-160 overflow-y-auto">
       <table className="w-full text-sm text-left">
         <thead className="bg-gray-800 text-gray-100 text-xs tracking-wider sticky top-0">
           <tr>

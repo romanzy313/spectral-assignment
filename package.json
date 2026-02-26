@@ -3,10 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {
-    "build:frontend": "pnpm --filter frontend build"
-  },
+  "scripts": {},
   "keywords": [],
   "author": "Roman Volovoy",
-  "packageManager": "pnpm@10.30.2"
+  "packageManager": "pnpm@10.30.2",
+  "devDependencies": {
+    "@playwright/test": "^1.58.2",
+    "@types/node": "^24.10.13"
+  }
 }

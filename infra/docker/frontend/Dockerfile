@@ -22,14 +22,14 @@ FROM node:24-alpine AS builder
 
 WORKDIR /app
 
+ARG NODE_ENV=production
+ENV NODE_ENV=production
+
 ARG PUBLIC_SPECTRAL_GRPC_CLIENT_ORIGIN
 RUN if [ -z "$PUBLIC_SPECTRAL_GRPC_CLIENT_ORIGIN" ]; then \
     echo "Error: PUBLIC_SPECTRAL_GRPC_CLIENT_ORIGIN build argument is required." \
     exit 1; \
     fi
-
-ARG NODE_ENV=production
-ENV NODE_ENV=production
 
 COPY --from=setup /app .
 
@@ -44,7 +44,7 @@ RUN --mount=type=cache,target=/pnpm/store \
 
 COPY . .
 
-RUN pnpm build:frontend
+RUN pnpm --filter frontend build
 
 # Production stage
 FROM nginx:alpine AS production

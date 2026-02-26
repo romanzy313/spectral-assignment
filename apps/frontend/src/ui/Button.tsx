@@ -16,6 +16,7 @@ export function Button({ disabled, className, ...rest }: Props) {
         className,
       )}
       {...rest}
+      disabled={disabled}
     />
   );
 }
