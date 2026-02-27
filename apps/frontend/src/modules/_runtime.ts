@@ -1,6 +1,8 @@
-import { FetchApi } from "../util/api/FetchApi";
+import { makeApiCaller } from "../util/api";
 import { SensorApiClient } from "./sensor";
 
-export const sensorApiClient = new SensorApiClient(
-  new FetchApi(import.meta.env.PUBLIC_SPECTRAL_GRPC_CLIENT_ORIGIN),
+const apiCaller = makeApiCaller(
+  import.meta.env.PUBLIC_SPECTRAL_GRPC_CLIENT_ORIGIN,
 );
+
+export const sensorApiClient = new SensorApiClient(apiCaller);

@@ -8,21 +8,22 @@ export class SensorApiClient {
     this.apiCaller = apiCaller;
   }
 
-  getPage(req: SensorPageRequest): Promise<SensorPage> {
-    return this.apiCaller.rpc(
-      "GET",
-      "/api/v1/sensor/data",
-      req,
-      (res: {
-        nextCursor: number | null;
-        data: { t: number; v: number }[];
-      }) => ({
-        nextCursor: res.nextCursor,
-        data: res.data.map(({ t, v }) => ({
-          timestamp: new Date(t * 1000),
-          value: v,
-        })),
-      }),
-    );
+  async getPage(req: SensorPageRequest): Promise<SensorPage> {
+    const res = await this.apiCaller<{
+      nextCursor: number | null;
+      data: { t: number; v: number }[];
+    }>({
+      method: "GET",
+      path: "/api/v1/sensor/data",
+      data: req,
+    });
+
+    return {
+      nextCursor: res.nextCursor,
+      data: res.data.map(({ t, v }) => ({
+        timestamp: new Date(t * 1000),
+        value: v,
+      })),
+    };
   }
 }

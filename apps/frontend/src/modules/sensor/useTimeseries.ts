@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import type { SensorApiClient, SensorData } from "../modules/sensor";
+import type { SensorApiClient, SensorData } from ".";
 
 export function useTimeseries({
   sensorApiClient,

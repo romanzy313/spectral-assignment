@@ -1,28 +1,16 @@
-export type ApiMethod = "GET" | "POST" | "PUT" | "DELETE";
-type SimpleValue = string | number | boolean | null;
+export type GetData = Record<string, string | number | boolean | null>;
+export type ApiCallMethods = "GET" | "POST" | "PUT" | "DELETE";
 
-export interface ApiCaller {
-  rpc<T, U>(
-    method: Exclude<ApiMethod, "GET">,
-    path: string,
-    data: T,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    responseConverter?: (data: any) => U,
-  ): Promise<U>;
+export type AppCallArgs =
+  | {
+      method: "GET";
+      path: string;
+      data?: Record<string, unknown>;
+    }
+  | {
+      method: Exclude<ApiCallMethods, "GET">;
+      path: string;
+      data?: GetData;
+    };
 
-  rpc<T extends Record<string, SimpleValue>, U>(
-    method: "GET",
-    path: string,
-    data: T,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    responseConverter?: (data: any) => U,
-  ): Promise<U>;
-}
-
-export class ApiError extends Error {
-  constructor(message: string, cause: unknown) {
-    super(message);
-    this.name = "ApiError";
-    this.cause = cause;
-  }
-}
+export type ApiCaller = <T>(args: AppCallArgs) => Promise<T>;

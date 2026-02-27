@@ -54,7 +54,7 @@ dev-test-js:
 	pnpm --filter frontend test:watch
 
 .PHONY: test
-test: go-test ts-test
+test: test-go test-js
 
 .PHONY: test-e2e
 test-e2e:

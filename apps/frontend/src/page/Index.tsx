@@ -1,5 +1,5 @@
 import { SensorTable } from "../component/SensorTable";
-import { useTimeseries } from "../hook/useTimeseries";
+import { useTimeseries } from "../modules/sensor";
 import { sensorApiClient } from "../modules/_runtime";
 import { Button } from "../ui/button";
 

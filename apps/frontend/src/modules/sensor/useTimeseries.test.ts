@@ -4,7 +4,7 @@ import { beforeEach, describe, expect, it, vi, type Mock } from "vitest";
 import { renderHook, act } from "@testing-library/react";
 
 import { useTimeseries } from "./useTimeseries";
-import { SensorApiClient } from "../modules/sensor";
+import { SensorApiClient } from ".";
 
 describe("useTimeseries", () => {
   let getPage: Mock<SensorApiClient["getPage"]>;

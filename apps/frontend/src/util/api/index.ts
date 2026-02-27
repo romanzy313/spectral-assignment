@@ -1,2 +1,2 @@
-export * from "./FetchApi";
+export * from "./apiCaller";
 export * from "./types";
