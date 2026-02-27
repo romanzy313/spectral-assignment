@@ -41,7 +41,7 @@ export function useTimeseries({
 
       return true;
     } catch (error) {
-      console.error("Error getting timeseries data:", error);
+      // console.error("Error getting timeseries data:", error);
 
       setError(error instanceof Error ? error.message : `${error}`);
       return false;

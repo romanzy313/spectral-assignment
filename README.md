@@ -6,7 +6,7 @@ First, I’d like to clarify the naming. I have shortened the names for clarity.
 
 ## Development Setup
 
-I am developing on Ubuntu 25.10. Some commands are for Ubuntu systems. macOS commands may differ a bit.
+I am developing on Ubuntu 25.10. MacOS commands may differ a bit.
 
 ### Golang
 
@@ -14,8 +14,8 @@ I am developing on Ubuntu 25.10. Some commands are for Ubuntu systems. macOS com
 - [Install protobuf compiler](https://protobuf.dev/installation/). Verify version with `protoc --version`. Any version 3+ should be okay.
 - Install make, if not already installed (e.g. `apt install make`).
 - Install the development go binaries with `make install-tools`.
-- Make sure that go binary paths are accessible by `protoc` (e.g. `export PATH="$PATH:$(go env GOPATH)/bin"`). Check with `protoc-gen-go --version`
-- Install go packages `go mod download`
+- Make sure that go binary paths are accessible by `protoc` (e.g. `export PATH="$PATH:$(go env GOPATH)/bin"`). Check with `protoc-gen-go --version`.
+- Install go packages `go mod download`.
 
 ### Node
 
@@ -27,8 +27,8 @@ I am developing on Ubuntu 25.10. Some commands are for Ubuntu systems. macOS com
 
 ### Other
 
-- [Install Docker](https://docs.docker.com/engine/install/)
-- Install playwright dependencies with `sudo pnpm exec playwright install-deps`
+- [Install Docker](https://docs.docker.com/engine/install/).
+- Install playwright dependencies with `sudo pnpm exec playwright install-deps`.
 
 ## How to Use
 
@@ -52,8 +52,6 @@ To run end-to-end tests, first start the Docker Compose with `make run-docker`. 
 
 ## Design Decisions
 
-There were a couple TODO
-
 ### Data Modeling
 
 I have chosen to implement cursor-based pagination for sensor data.
@@ -61,7 +59,7 @@ I have chosen to implement cursor-based pagination for sensor data.
 ```proto
 message GetPageResponse {
   optional int64 next_cursor = 1;
-  repeated SensorData data = 2;
+  repeated SensorData data = 2;i
 }
 ```
 
@@ -76,9 +74,9 @@ message SensorData {
 }
 ```
 
-I’ve decided to use Unix timestamps to minimize data transfer and reduce conversion overhead compared to a "native" protobuf datatype, `google.protobuf.Timestamp`. For sensor reading, I went with using a floating-point data type instead of strings. Since this data is used purely for visualization, a float is better for performance and simplicity.
+I’ve decided to use Unix timestamps to reduce conversion overhead compared to a "native" protobuf datatype, `google.protobuf.Timestamp`. For sensor reading, I went with using a floating-point data type instead of strings. Since this data is used purely for visualization, a float is better for performance and simplicity.
 
-However, if the data from the `server` is used in financial calculations, it should be represented as a `string` rather than a `double`. Then it will be the consumer's task to perform appropriate decimal or float conversions.
+However, if the timeseries data is used in financial calculations, it should be represented as a `string` rather than a `double`. Then it will be the consumer's task to perform appropriate decimal or float conversions.
 
 Lastly, the JSON sensor reading looks like so:
 
@@ -86,29 +84,31 @@ Lastly, the JSON sensor reading looks like so:
 { "t": 1630456800, "v": 55.09 }
 ```
 
-I have shortened the key names to save on data transmission. Using an even shorter array syntax, such as `[1630456800, 55.09]`, was considered but ultimately not adopted. From my experience, charting libraries require an object structure for them to work. This way, it's readable. Also, multiple sensor values can be added to this object. Either way is fine; I don't have time to refactor to arrays anyway.
+I have shortened the key names to save on data transmission. Using an even shorter array syntax, such as `[1630456800, 55.09]`, was considered but not implemented. Either way is fine; I chose the object way for a few reasons though. It's readable, and multiple sensor values can be added to this object easily. 
 
 ### Project Structure and Architecture
 
-The `gRPC-Server` in `./pkg/server` uses a separation-of-concerns architecture. Its sub-packages are `model`, `repository`, and `service`. This makes it easier to maintain and scale the application. For now, service just proxies the repository. In the future, services will be wider and can use multiple repositories and work with various models.
+The `gRPC-Server` in `./pkg/server` uses a separation-of-concerns architecture. Its sub-packages are `model`, `repository`, and `service`. This makes it easier to maintain and scale the application. For now, service just proxies the repository. In the future, services will be wider and can use multiple repositories or work with various models.
 
-The `gRPC-Client` at `./pkg/client` uses vertical slice architecture. A go package exists per feature (sensor in this example). Inside each feature, a flat folder structure defines everything needed to implement it. `DTOs` with mapper functions are used to transform the data between JSON and protobuf encodings. This architecture best fits the `gRPC-Client`, as it simply proxies data. In the future, auth should be added as a middleware, outside each feature implementation.
+The `gRPC-Client` at `./pkg/client` uses vertical slice architecture. A go package exists per feature (`sensor` in this assignment). Inside each feature, a flat folder structure defines everything needed to implement it. `DTOs` with mapper functions are used to transform the data between JSON and protobuf encodings. This architecture best fits the `gRPC-Client`, as it simply proxies data. In the future, auth should be added as a middleware, outside each feature implementation.
 
-The `Front-End` at `./apps/frontend` utilizes a typical React application structure. Components, hooks, and UI elements are split into separate folders. Vertical slice architecture is used again to separate different features, which I call modules. A special `_runtime.ts` file is used to initialize relevant modules as global dependencies. It is like a singleton, but on import level. The frontend application should be developed in terms of modules and reusable components.
+The `Front-End` at `./apps/frontend` utilizes a typical React application structure. Components, pages, and UI elements are split into separate folders. Vertical slice architecture is used again to separate different features, which I call modules. A special `_runtime.ts` file is used to initialize relevant modules as global dependencies. It is like a singleton, but on import level. The frontend application should be developed in terms of modules and reusable components.
 
 ### Technology Choices
 
 Here is the list of key technologies used for this assignment, as well as a short explanation of why I chose them:
 
 - Official protobuf compiler. It works for backend purposes and is well-known to developers.
-- `Echo` as http server. It's simple to use and has lots of useful middleware out of the box
+- `Echo` as http server. It's simple to use and has many convenience features built in.
 - `slog` for structured logging. It's a solid library with a good API.
 - `React` with `Vite` bundler, `Vitest` testing framework, `tailwind` styling for frontend. Its a typical front-end stack I am familiar with, and its development speed is great!
-- `Playwright` for end-to-end testing. Really good project, something I am familiar with
+- `Playwright` for end-to-end testing. Really good project, something I am familiar with.
 
 ### Testing
 
-Unit test coverage is currently below 80%. To compensate, I have implementedend-to-end testing (`frontend` → `client` → `server` → `mock db`). Integration testing can also be done (`http request` → `client` → `server` → `mock db`). TODO
+Unit test coverage for the golang is currently below 80%. I am not too familiar with mocking in Go, and I did not have time to implement this on grpc level.
+
+To compensate, I have implemented end-to-end testing (`frontend` → `client` → `server` → `mock db`). Integration testing can also be done (`http request` → `client` → `server` → `mock db`), with more time. Playwright works well for simpler `fetch` testing without the HTML frontend!
 
 ### Other
 
@@ -120,8 +120,5 @@ Unit test coverage is currently below 80%. To compensate, I have implementedend-
 
 ## What Can Be Improved
 
-TODO
-
-Testing, Docker builds where contexts dont collide with each other.
-Proper e2e setup with real db.
-Integration tests with test-containers
+- Docker builds are not optimal. Currently, any code change will invalidate all Docker contexts.
+- More unit tests are needed for the `server`, even though its implementation is simple.

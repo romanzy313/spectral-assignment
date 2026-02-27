@@ -2,7 +2,7 @@ package model
 
 type SensorData struct {
 	Timestamp int64
-	Value     float64 // FIXME: should I be using decimal here?
+	Value     float64
 }
 
 type SensorPage struct {

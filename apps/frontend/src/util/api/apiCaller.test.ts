@@ -76,7 +76,7 @@ describe("SensorApiClient", () => {
       json: () => Promise.resolve({ message: "test error" }),
     }));
 
-    expect(
+    await expect(
       apiCaller({
         method: "POST",
         path: "/api",

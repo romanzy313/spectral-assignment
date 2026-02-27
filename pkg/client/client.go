@@ -14,7 +14,6 @@ import (
 	"github.com/labstack/echo/v5/middleware"
 )
 
-// TODO: use the same logger as server
 func Run(ctx context.Context, config Config) {
 	e := echo.New()
 	e.Logger = logger.New(config.IsDev)

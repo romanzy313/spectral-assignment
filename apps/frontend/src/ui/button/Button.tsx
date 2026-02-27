@@ -6,8 +6,6 @@ interface Props extends ComponentProps<"button"> {
   //
 }
 export function Button({ disabled, className, ...rest }: Props) {
-  // todo: handle disabled state
-
   return (
     <button
       className={cn(
